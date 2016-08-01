@@ -32,7 +32,7 @@ public class JUsuarios extends JInternalFrame {
 	private JTextField txtID;
 	private JTextField txtNombreUsuario;
 	private JTable table;
-	private JPasswordField txtContraseña;
+	private JPasswordField txtContrasena;
 	private JPasswordField txtConfirmar;
 
 	/**
@@ -59,7 +59,7 @@ public class JUsuarios extends JInternalFrame {
 		txtID.setEnabled(false);
 		txtID.setColumns(10);
 		
-		JLabel lblContraseña = new JLabel("Contrase\u00F1a");
+		JLabel lblContrasena = new JLabel("Contrase\u00F1a");
 		
 		JLabel lblNombreUsuario = new JLabel("Nombre Usuario");
 		
@@ -68,11 +68,11 @@ public class JUsuarios extends JInternalFrame {
 		txtNombreUsuario = new JTextField();
 		txtNombreUsuario.setColumns(10);
 		
-		txtContraseña = new JPasswordField();
+		txtContrasena = new JPasswordField();
 		
 		txtConfirmar = new JPasswordField();
 		
-		JLabel lblConfirmeContrasea = new JLabel("Confirme Contrase\u00F1a");
+		JLabel lblConfirmeContrasena = new JLabel("Confirme Contrase\u00F1a");
 		
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
@@ -100,15 +100,15 @@ public class JUsuarios extends JInternalFrame {
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblUsuarios, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
 								.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-									.addComponent(lblContraseña)
+									.addComponent(lblContrasena)
 									.addComponent(lblNombreUsuario)
-									.addComponent(lblConfirmeContrasea)
+									.addComponent(lblConfirmeContrasena)
 									.addComponent(btnGuardar)))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
 									.addComponent(txtNombreUsuario, GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-									.addComponent(txtContraseña)
+									.addComponent(txtContrasena)
 									.addComponent(txtConfirmar))
 								.addComponent(btnLimpiarCampos))))
 					.addContainerGap())
@@ -126,12 +126,12 @@ public class JUsuarios extends JInternalFrame {
 						.addComponent(txtNombreUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtContraseña, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblContraseña))
+						.addComponent(txtContrasena, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblContrasena))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtConfirmar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblConfirmeContrasea))
+						.addComponent(lblConfirmeContrasena))
 					.addPreferredGap(ComponentPlacement.RELATED, 315, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnLimpiarCampos)
@@ -161,20 +161,20 @@ public class JUsuarios extends JInternalFrame {
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Datos inválidos", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Datos invï¿½lidos", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	public void mapearADatos(Usuario usr)
 	{
 		usr.setUserNombre(txtNombreUsuario.getText());
-		usr.setPass(txtContraseña.getPassword().toString());
+		usr.setPass(txtContrasena.getPassword().toString());
 		
 	}
 	public boolean validar()
 	{
 		boolean valido = true;
-		if(txtNombreUsuario.getText().equals("")||txtContraseña.getPassword().toString().length()<8/*||!txtContraseña.getPassword().toString().equals(txtConfirmar.getPassword().toString())*/)
+		if(txtNombreUsuario.getText().equals("")||txtContrasena.getPassword().toString().length()<8/*||!txtContrasena.getPassword().toString().equals(txtConfirmar.getPassword().toString())*/)
 		{
 			valido = false;
 		}
@@ -196,7 +196,7 @@ public class JUsuarios extends JInternalFrame {
 	public void limpiarCampos()
 	{
 		txtConfirmar.setText("");
-		txtContraseña.setText("");
+		txtContrasena.setText("");
 		txtID.setText("");
 		txtNombreUsuario.setText("");
 	}
