@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 import business.entities.Calle;
 import business.entities.Reclamo;
+import business.logic.CalleLogic;
 import business.logic.CatalogoReclamos;
 import business.logic.ControladorABMReclamos;
 
@@ -40,7 +41,7 @@ public class Jreclamos extends JInternalFrame {
 	private JTextField txtNroReclamo;
 	private JTextField txtFechaIngreso;
 	private JTextField txtLetraDir;
-	private JComboBox cmbCalles;
+	private JComboBox<business.entities.Calle> cmbCalles;
 	private JCheckBox chckbxBis;
 	private ControladorABMReclamos cont;
 
@@ -237,6 +238,13 @@ public class Jreclamos extends JInternalFrame {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setearTablaReclamos();
 		scrollPane.setViewportView(table);
+		CalleLogic ca = new CalleLogic();
+		try {
+			rellenarComboBoxCalles(ca.devolvercalles(), cmbCalles);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 	}
 	
@@ -284,13 +292,28 @@ public class Jreclamos extends JInternalFrame {
 		}
 		catch(NumberFormatException e1)
 		{
-			JOptionPane.showMessageDialog(null, "Ingrese una altura válida","Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Ingrese una altura vï¿½lida","Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		
 		catch(IllegalArgumentException e2)
 		{
-			JOptionPane.showMessageDialog(null, "Ingrese una fecha válida","Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Ingrese una fecha vï¿½lida","Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	public void rellenarComboBoxCalles(ArrayList<Calle> arrayList, JComboBox<Calle> cmb) throws Exception, Exception, Exception
+	{
+		try
+		{
+			for(int i=0; i< arrayList.size();i++)
+			{
+				cmb.addItem(arrayList.get(i));
+			}
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		
 	}

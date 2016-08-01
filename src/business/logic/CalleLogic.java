@@ -1,5 +1,6 @@
 package business.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import data.CalleData;
@@ -25,7 +26,7 @@ public class CalleLogic
 		}
 	}
 	
-	public List<Calle> devolvercalles() throws Exception
+	public ArrayList<Calle> devolvercalles() throws Exception
 	{
 		CalleData cd = new CalleData();
 		try {

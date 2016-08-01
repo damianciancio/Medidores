@@ -9,6 +9,7 @@ import java.awt.EventQueue;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.GroupLayout;
@@ -16,8 +17,9 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-
+import business.entities.Calle;
 import business.entities.Usuario;
+import business.logic.CalleLogic;
 import business.logic.UsuarioLogic;
 import util.State;
 
@@ -25,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.BoxLayout;
 import javax.swing.JToolBar;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
@@ -148,6 +151,7 @@ public class JUsuarios extends JInternalFrame {
 		
 		JButton btnBorrar = new JButton("Borrar");
 		toolBar.add(btnBorrar);
+		
 
 	}
 	
@@ -200,4 +204,6 @@ public class JUsuarios extends JInternalFrame {
 		txtID.setText("");
 		txtNombreUsuario.setText("");
 	}
+	
+	
 }
