@@ -12,6 +12,72 @@ import business.entities.TipoReclamo;
 
 public class ReclamoData 
 {
+	
+	public void agregarReclamo(Reclamo rec)
+	{
+		try {
+			Connection con = Conexion.obtenerConexion("medidores");
+			Statement cmd = null;
+		    cmd = con.createStatement();
+		    
+		    cmd.execute("insert  into reclamos "+ this.devolverStringInsert(rec));
+		    
+		
+		    							
+		} catch (SQLException e)
+		{
+			System.out.println("Fallo el insert");
+		}
+	}
+	
+	
+
+	public Reclamo buscar(Reclamo re) throws Exception
+	{
+		Connection con = Conexion.obtenerConexion("medidores");
+		
+		ResultSet rs = null;
+		Statement cmd = null;
+		Reclamo find = null;
+		try {
+	
+		    cmd = con.createStatement();
+		    rs = cmd.executeQuery("select * "+
+		    						"from reclamos "+
+		    						"where reclamos.idreclamo =" + re.getIdReclamo());
+		    find = this.mapear(rs);
+		    
+		} catch (SQLException e)
+		{
+			System.out.println("Fallo el select para buscar reclamo. "+ e.getStackTrace());
+			throw new Exception("Error al recuperar el reclamo. Intente nuevamente, si el problema persiste, llame a alguien. ", e);
+		}
+		
+		
+		try 
+			{
+			con.close();
+			}
+		catch(SQLException e) {
+			System.out.println("Conexion no cerrada");
+		}
+		finally 
+		{
+			con.close();
+			cmd = null;
+			rs = null;
+		}
+		return find;
+	}
+	
+	
+	public String devolverStringInsert(Reclamo rec)
+	{
+		String cadena = new String();
+		cadena = "(\""+rec.getNomTitular()+"\",\""+rec.getCalle().getIdCalle()+"\", "+rec.getAltura()+",\" "+rec.getPiso()+"\", \""+
+		"\", \""+rec.getDepto()+"\", \""+rec.getBis()+"\", "+rec.getTipoReclamo().getIdTipoReclamo()+" ,\""+rec.getFechaIngreso()+"\", "+rec.getIdEstado()+")";
+		return cadena;
+	}
 	public ArrayList<Reclamo> devolverReclamos()
 	{
 	
@@ -26,11 +92,7 @@ public class ReclamoData
 	
 		    cmd = con.createStatement();
 	
-		    rs = cmd.executeQuery("SELECT idReclamo, nomTitular, codCalle, "+
-		    "altura, piso, depto, letraDir, bis, idtiporeclamo, fechaIngreso, idEstado, callesRosariocol, "+
-		    		" desctiporeclamo FROM reclamos inner join callesrosario "+
-		    "on codCalle = idcallesrosario "+
-		    		"inner join tiporeclamo on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo");
+		    rs = cmd.executeQuery("SELECT idReclamo, nomTitular, codCalle, altura, piso, depto, letraDir, bis, idtiporeclamo, fechaIngreso, idEstado, callesRosariocol, desctiporeclamo FROM reclamos inner join callesrosario on codCalle = idcallesrosario inner join tiporeclamo on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo");
 	
 		    
 		} catch (SQLException e)
@@ -42,7 +104,7 @@ public class ReclamoData
 			while(rs.next())
 			{
 				Reclamo recl = new Reclamo();
-				this.mapear(rs,recl);
+				recl = this.mapear(rs);
 				rec.add(recl);
 			}
 		
@@ -62,9 +124,11 @@ public class ReclamoData
 		return rec;
 	}
 	
-	public void mapear(ResultSet rs, Reclamo rec)
+	public Reclamo mapear (ResultSet rs)
 	{
+		Reclamo rec = new Reclamo();
 		try {
+				
 				TipoReclamo tr = new TipoReclamo();
 				tr.setIdTipoReclamo(rs.getInt(9));
 				tr.setDescTipoReclamo(rs.getString(13));
@@ -87,6 +151,7 @@ public class ReclamoData
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return rec;
 	}
 
 	public void actualizar(Reclamo re) throws Exception

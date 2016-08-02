@@ -20,8 +20,9 @@ import javax.swing.table.DefaultTableModel;
 import business.entities.Calle;
 import business.entities.Reclamo;
 import business.logic.CalleLogic;
-import business.logic.CatalogoReclamos;
-import business.logic.ControladorABMReclamos;
+import business.logic.ReclamoLogic;
+import util.ModoFrame;
+import util.State;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -31,7 +32,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.ListSelectionModel;
 
-public class Jreclamos extends JInternalFrame {
+public class Jreclamos extends JIT {
 	private JTable table;
 	private JTextField txtNomTitular;
 	private JTextField txtCalle;
@@ -43,12 +44,11 @@ public class Jreclamos extends JInternalFrame {
 	private JTextField txtLetraDir;
 	private JComboBox<business.entities.Calle> cmbCalles;
 	private JCheckBox chckbxBis;
-	private ControladorABMReclamos cont;
 
 	
-	public Jreclamos() {
-		
-		cont = new ControladorABMReclamos();
+	public Jreclamos() 
+	{
+		this.setModo(ModoFrame.ALTA);
 		setBounds(100, 100, 677, 518);
 		
 		JSplitPane splitPane = new JSplitPane();
@@ -107,7 +107,7 @@ public class Jreclamos extends JInternalFrame {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				agregarReclamo();
+				guardarCambios();
 			}
 		});
 		
@@ -259,10 +259,13 @@ public class Jreclamos extends JInternalFrame {
 		modelo.addColumn("Piso");
 		modelo.addColumn("Depto");
 		table.setModel(modelo);
-		CatalogoReclamos cat = new CatalogoReclamos();
-		rec = cat.getReclamos();
+		ReclamoLogic cat = new ReclamoLogic();
+		try
+		{
+			rec = cat.devolverReclamos();
 		Object[] arre;
-		for (Reclamo reclamo : rec) {
+		for (Reclamo reclamo : rec) 
+		{
 			arre = new Object[6];
 			arre[0] = reclamo.getIdReclamo();
 			arre[1] = reclamo.getNomTitular();
@@ -271,34 +274,57 @@ public class Jreclamos extends JInternalFrame {
 			arre[4] = reclamo.getPiso();
 			arre[5] = reclamo.getDepto();
 			modelo.addRow(arre);
-						
 		}
+		}
+		catch (Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+						
+		
 	}
 	
-	public void agregarReclamo()
+	public void guardarCambios()
 	{
 		try
 		{
-			Reclamo rec = new Reclamo();
-			rec.setNomTitular(txtNomTitular.getText());
-			rec.setCalle(((Calle)cmbCalles.getSelectedItem()).getIdCalle());
-			rec.setAltura(Integer.parseInt(txtAltura.getText()));
-			rec.setBis(chckbxBis.isSelected());
-			rec.setPiso(txtPiso.getText());
-			rec.setDepto(txtdepto.getText());
-			rec.setFechaIngreso(Date.valueOf(txtFechaIngreso.getText()));
-			
-			cont.agregarReclamo(rec);
+			ReclamoLogic rl = new ReclamoLogic();
+			Reclamo r = new Reclamo();
+			switch (this.modo) {
+			case ALTA:
+				r.estado = State.NUEVO;
+				break;
+			case BAJA:
+				r.estado = State.ELIMINAR;
+				break;
+			case MODIFICACION:
+				r.estado = State.ACTUALIZAR;
+				break;
+			case CONSULTA:
+				break;
+
+			default:
+				break;
+			}
+			try
+			{
+				r = this.mapearADatos();
+				rl.guardaCambios(r);
+			}
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
 		}
 		catch(NumberFormatException e1)
 		{
-			JOptionPane.showMessageDialog(null, "Ingrese una altura v�lida","Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Ingrese una altura válida","Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		
 		catch(IllegalArgumentException e2)
 		{
-			JOptionPane.showMessageDialog(null, "Ingrese una fecha v�lida","Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Ingrese una fecha válida","Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
@@ -316,5 +342,20 @@ public class Jreclamos extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		
+	}
+	
+	private Reclamo mapearADatos()
+	{
+		Reclamo rec = new Reclamo();
+		
+		
+		rec.setNomTitular(txtNomTitular.getText());
+		rec.setCalle(((Calle)cmbCalles.getSelectedItem()));
+		rec.setAltura(Integer.parseInt(txtAltura.getText()));
+		rec.setBis(chckbxBis.isSelected());
+		rec.setPiso(txtPiso.getText());
+		rec.setDepto(txtdepto.getText());
+		rec.setFechaIngreso(Date.valueOf(txtFechaIngreso.getText()));
+		return rec;
 	}
 }

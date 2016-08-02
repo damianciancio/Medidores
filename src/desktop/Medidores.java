@@ -201,21 +201,29 @@ public class Medidores {
 		modelo.addColumn("Piso");
 		modelo.addColumn("Depto");
 		tblReclamos.setModel(modelo);
-		CatalogoReclamos cat = new CatalogoReclamos();
-		rec = cat.getReclamos();
-		Object[] arre;
-		for (Reclamo reclamo : rec) {
-			arre = new Object[6];
-			arre[0]=reclamo.getIdReclamo();
-			arre[1]= reclamo.getNomTitular();
-			arre[2] = reclamo.getCalle();
-			arre[3] = reclamo.getAltura();
-			arre[4] = reclamo.getPiso();
-			arre[5] = reclamo.getDepto();
-			modelo.addRow(arre);
-			jscroll = new JScrollPane(tblReclamos);
-			
+		ReclamoLogic cat = new ReclamoLogic();
+		try
+		{
+			rec = cat.devolverReclamos();
+			Object[] arre;
+			for (Reclamo reclamo : rec) {
+				arre = new Object[6];
+				arre[0]=reclamo.getIdReclamo();
+				arre[1]= reclamo.getNomTitular();
+				arre[2] = reclamo.getCalle();
+				arre[3] = reclamo.getAltura();
+				arre[4] = reclamo.getPiso();
+				arre[5] = reclamo.getDepto();
+				modelo.addRow(arre);
+				jscroll = new JScrollPane(tblReclamos);
+				
+			}
 		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
 	}
 	
 	public void agregarVentana(JInternalFrame frame)
@@ -228,5 +236,5 @@ public class Medidores {
 		actual.setVisible(true);
 		dskPane.add(actual);
 			
-}
+	}
 }

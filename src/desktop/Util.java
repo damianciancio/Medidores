@@ -4,13 +4,14 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import business.entities.Calle;
 import business.entities.Reclamo;
-import business.logic.CatalogoReclamos;
+import business.logic.ReclamoLogic;
 
 public class Util {
 	
@@ -26,18 +27,25 @@ public class Util {
 		modelo.addColumn("Piso");
 		modelo.addColumn("Depto");
 		tblReclamos.setModel(modelo);
-		CatalogoReclamos cat = new CatalogoReclamos();
-		rec = cat.getReclamos();
-		Object[] arre;
-		for (Reclamo reclamo : rec) {
-			arre = new Object[6];
-			arre[0]=reclamo.getIdReclamo();
-			arre[1]= reclamo.getNomTitular();
-			arre[2] = reclamo.getCalle();
-			arre[3] = reclamo.getAltura();
-			arre[4] = reclamo.getPiso();
-			arre[5] = reclamo.getDepto();
-			modelo.addRow(arre);
+		ReclamoLogic cat = new ReclamoLogic();
+		try
+			{
+			rec = cat.devolverReclamos();
+			Object[] arre;
+			for (Reclamo reclamo : rec) {
+				arre = new Object[6];
+				arre[0]=reclamo.getIdReclamo();
+				arre[1]= reclamo.getNomTitular();
+				arre[2] = reclamo.getCalle();
+				arre[3] = reclamo.getAltura();
+				arre[4] = reclamo.getPiso();
+				arre[5] = reclamo.getDepto();
+				modelo.addRow(arre);
+			}
+		}
+		catch (Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
 	
