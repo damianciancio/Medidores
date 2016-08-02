@@ -92,7 +92,13 @@ public class ReclamoData
 	
 		    cmd = con.createStatement();
 	
-		    rs = cmd.executeQuery("SELECT idReclamo, nomTitular, codCalle, altura, piso, depto, letraDir, bis, idtiporeclamo, fechaIngreso, idEstado, callesRosariocol, desctiporeclamo FROM reclamos inner join callesrosario on codCalle = idcallesrosario inner join tiporeclamo on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo");
+		    rs = cmd.executeQuery("SELECT idReclamo, nomTitular, codCalle, altura, "
+		    +"piso, depto, letraDir, bis, reclamos.idtiporeclamo, fechaIngreso, "
+		    +"idEstado, callesRosariocol, desctiporeclamo "
+		    +"FROM reclamos inner join callesrosario "
+		    +"on codCalle = idcallesrosario inner join tiporeclamo "
+		    +"on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo"
+		    +" order by reclamos.idreclamo desc");
 	
 		    
 		} catch (SQLException e)
