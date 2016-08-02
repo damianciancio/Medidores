@@ -11,7 +11,7 @@ public class Reclamo extends Entidad {
 	private String depto;
 	private String letraDir;
 	private boolean bis;
-	private int idTipoReclamo;
+	private TipoReclamo tipoReclamo;
 	private Date fechaIngreso;
 	private int idEstado;
 	
@@ -81,11 +81,11 @@ public class Reclamo extends Entidad {
 		if(es.equals("SI")) this.bis = true;
 		else this.bis = false;
 	}
-	public int getIdTipoReclamo() {
-		return idTipoReclamo;
+	public TipoReclamo getTipoReclamo() {
+		return tipoReclamo;
 	}
-	public void setIdTipoReclamo(int idTipoReclamo) {
-		this.idTipoReclamo = idTipoReclamo;
+	public void setTipoReclamo(TipoReclamo atipoReclamo) {
+		this.tipoReclamo = atipoReclamo;
 	}
 	public Date getFechaIngreso() {
 		return fechaIngreso;
