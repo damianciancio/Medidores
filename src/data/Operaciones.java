@@ -187,7 +187,7 @@ public class Operaciones {
 			
 				rec.setIdReclamo(rs.getInt(1));
 				rec.setNomTitular(rs.getString(2));
-				rec.setCodCalle(rs.getString(3));
+				rec.setCalle(rs.getString(3));
 				rec.setAltura(rs.getInt(4));
 				rec.setPiso(rs.getString(5));
 				rec.setDepto(rs.getString(6));
@@ -257,7 +257,7 @@ public class Operaciones {
 	public String devolverStringInsert(Reclamo rec)
 	{
 		String cadena = new String();
-		cadena = "(\""+rec.getNomTitular()+"\",\""+rec.getCodCalle()+"\", "+rec.getAltura()+",\" "+rec.getPiso()+"\", \""+
+		cadena = "(\""+rec.getNomTitular()+"\",\""+rec.getCalle()+"\", "+rec.getAltura()+",\" "+rec.getPiso()+"\", \""+
 		"\", \""+rec.getDepto()+"\", \""+rec.getBis()+"\", "+rec.getIdTipoReclamo()+" ,\""+rec.getFechaIngreso()+"\", "+rec.getIdEstado()+")";
 		return cadena;
 	}

@@ -221,7 +221,7 @@ public class AbmReclamos extends JPanel {
 		{
 			Reclamo rec = new Reclamo();
 			rec.setNomTitular(txtNombreTitular.getText());
-			rec.setCodCalle(((Calle)cmbCalles.getSelectedItem()).getIdCalle());
+			rec.setCalle(((Calle)cmbCalles.getSelectedItem()).getIdCalle());
 			rec.setAltura(Integer.parseInt(txtAltura.getText()));
 			rec.setBis(chkBis.isSelected());
 			rec.setPiso(txtPiso.getText());
@@ -232,13 +232,13 @@ public class AbmReclamos extends JPanel {
 		}
 		catch(NumberFormatException e1)
 		{
-			JOptionPane.showMessageDialog(null, "Ingrese una altura válida","Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Ingrese una altura vï¿½lida","Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		
 		catch(IllegalArgumentException e2)
 		{
-			JOptionPane.showMessageDialog(null, "Ingrese una fecha válida","Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Ingrese una fecha vï¿½lida","Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}

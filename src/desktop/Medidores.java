@@ -208,7 +208,7 @@ public class Medidores {
 			arre = new Object[6];
 			arre[0]=reclamo.getIdReclamo();
 			arre[1]= reclamo.getNomTitular();
-			arre[2] = reclamo.getCodCalle();
+			arre[2] = reclamo.getCalle();
 			arre[3] = reclamo.getAltura();
 			arre[4] = reclamo.getPiso();
 			arre[5] = reclamo.getDepto();

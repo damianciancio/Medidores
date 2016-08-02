@@ -5,7 +5,7 @@ import java.sql.*;
 public class Reclamo extends Entidad {
 	private int idReclamo;
 	private String nomTitular;
-	private String codCalle;
+	private Calle calle;
 	private int altura;
 	private String piso;
 	private String depto;
@@ -40,11 +40,11 @@ public class Reclamo extends Entidad {
 	public void setNomTitular(String nomTitular) {
 		this.nomTitular = nomTitular;
 	}
-	public String getCodCalle() {
-		return codCalle;
+	public Calle getCalle() {
+		return calle;
 	}
-	public void setCodCalle(String codCalle) {
-		this.codCalle = codCalle;
+	public void setCalle(Calle codCalle) {
+		this.calle = codCalle;
 	}
 	public int getAltura() {
 		return altura;
