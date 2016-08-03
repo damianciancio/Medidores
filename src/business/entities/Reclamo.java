@@ -14,10 +14,19 @@ public class Reclamo extends Entidad {
 	private TipoReclamo tipoReclamo;
 	private Date fechaIngreso;
 	private int idEstado;
+	private String estadoAux;
 	
 	
 	
 	
+	public String getEstadoAux() {
+		return estadoAux;
+	}
+
+	public void setEstadoAux(String estadoAux) {
+		this.estadoAux = estadoAux;
+	}
+
 	public String devolverDatos()
 	{
 		return this.getNomTitular();

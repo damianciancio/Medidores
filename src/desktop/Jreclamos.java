@@ -71,7 +71,7 @@ public class Jreclamos extends JInternalFrame {
 		txtCalle = new JTextField();
 		txtCalle.setColumns(10);
 		
-		cmbCalles = new JComboBox();
+		cmbCalles = new JComboBox<Calle>();
 		
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
@@ -248,7 +248,8 @@ public class Jreclamos extends JInternalFrame {
 		CalleLogic ca = new CalleLogic();
 		try {
 			rellenarComboBoxCalles(ca.devolvercalles(), cmbCalles);
-		} catch (Exception e1) {
+		} catch (Exception e1) 
+		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -275,24 +276,29 @@ public class Jreclamos extends JInternalFrame {
 		modelo.addColumn("Piso");
 		modelo.addColumn("Depto");
 		modelo.addColumn("Fecha");
+		modelo.addColumn("Estado");
 		table.setModel(modelo);
+		table.setColumnSelectionAllowed(false);
+		table.setCellSelectionEnabled(false);
+		table.setRowSelectionAllowed(true);
 		ReclamoLogic cat = new ReclamoLogic();
 		try
 		{
 			rec = cat.devolverReclamos();
-		Object[] arre;
-		for (Reclamo reclamo : rec) 
-		{
-			arre = new Object[7];
-			arre[0] = reclamo.getIdReclamo();
-			arre[1] = reclamo.getNomTitular();
-			arre[2] = reclamo.getCalle();
-			arre[3] = reclamo.getAltura();
-			arre[4] = reclamo.getPiso();
-			arre[5] = reclamo.getDepto();
-			arre[6] = reclamo.getFechaIngreso();
- 			modelo.addRow(arre);
-		}
+			Object[] arre;
+			for (Reclamo reclamo : rec) 
+			{
+				arre = new Object[8];
+				arre[0] = reclamo.getIdReclamo();
+				arre[1] = reclamo.getNomTitular();
+				arre[2] = reclamo.getCalle();
+				arre[3] = reclamo.getAltura();
+				arre[4] = reclamo.getPiso();
+				arre[5] = reclamo.getDepto();
+				arre[6] = reclamo.getFechaIngreso();
+				arre[7] = reclamo.getEstadoAux();
+	 			modelo.addRow(arre);
+			}
 		}
 		catch (Exception e)
 		{
@@ -315,22 +321,13 @@ public class Jreclamos extends JInternalFrame {
 			try
 			{
 				calles = cl.buscarCalle(this.txtCalle.getText());
+				this.rellenarComboBoxCalles(calles, cmbCalles);
 			}
 			catch(Exception e)
 			{
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
-			finally
-			{
-				try
-				{
-					this.rellenarComboBoxCalles(calles, cmbCalles);
-				}
-				catch (Exception e)
-				{
-					JOptionPane.showMessageDialog(null, e.getMessage());
-				}
-			}
+			
 		}
 	}
 	
@@ -382,10 +379,15 @@ public class Jreclamos extends JInternalFrame {
 	{
 		try
 		{
+
+			cmb.invalidate();
+			cmb.removeAllItems();
+			cmb.validate();
 			for(int i=0; i< arrayList.size();i++)
 			{
 				cmb.addItem(arrayList.get(i));
 			}
+			cmb.validate();
 		}
 		catch(Exception e)
 		{
@@ -408,4 +410,48 @@ public class Jreclamos extends JInternalFrame {
 		rec.setFechaIngreso(Date.valueOf(txtFechaIngreso.getText()));
 		return rec;
 	}
+	
+	private void mapearDesdeTabla() throws Exception
+	{
+		if(table.getSelectedRow() == -1) throw new Exception("Seleccione una fila de la tabla para editarla"); 
+		else
+		{
+			Reclamo rec = new Reclamo();
+			int index = table.getSelectedRow();
+			Object[] arre = new Object[table.getModel().getColumnCount()];
+			for (int i = 0; i < table.getModel().getColumnCount(); i++)
+			{
+				arre[i] = table.getModel().getValueAt(index, i);
+			}
+			
+			rec.setIdReclamo((int)arre[0]);
+			rec.setNomTitular((String)arre[1]);
+			rec.setCalle((Calle)arre[2]);
+			rec.setAltura((int)arre[3]);
+			rec.setPiso((String)arre[4]);
+			rec.setDepto((String)arre[5]);
+			rec.setFechaIngreso((Date)arre[6]);	
+			
+			this.txtNomTitular.setText(rec.getNomTitular());
+			this.txtCalle.setText(rec.getCalle().toString());
+			this.txtAltura.setText(Integer.toString(rec.getAltura()));
+			this.txtPiso.setText(rec.getPiso());
+			this.txtdepto.setText(rec.getDepto());
+			this.txtFechaIngreso.setText(rec.getFechaIngreso().toString());
+		}
+	}
+	public void editar()
+	{
+		try
+		{
+			this.mapearDesdeTabla();
+			this.setModo(ModoFrame.MODIFICACION);
+			this.guardarCambios();
+		}
+		catch (Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+	
 }

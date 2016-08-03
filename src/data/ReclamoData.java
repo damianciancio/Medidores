@@ -92,13 +92,19 @@ public class ReclamoData
 	
 		    cmd = con.createStatement();
 	
-		    rs = cmd.executeQuery("SELECT idReclamo, nomTitular, codCalle, altura, "
-		    +"piso, depto, letraDir, bis, reclamos.idtiporeclamo, fechaIngreso, "
-		    +"idEstado, callesRosariocol, desctiporeclamo "
-		    +"FROM reclamos inner join callesrosario "
-		    +"on codCalle = idcallesrosario inner join tiporeclamo "
-		    +"on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo"
-		    +" order by reclamos.idreclamo desc");
+		    rs = cmd.executeQuery("SELECT idReclamo, nomTitular, codCalle, altura, "+
+		    		"piso, depto, letraDir, bis, reclamos.idtiporeclamo, fechaIngreso, "+
+		    		"idEstado, callesRosariocol, desctiporeclamo,  ifnull(resultados.descResult, \"Pendiente de inspeccion\") resultado "+
+		    		"FROM reclamos "+ 
+		    		"inner join callesrosario "+
+		    		"on codCalle = idcallesrosario "+ 
+		    		"inner join tiporeclamo "+
+		    		"on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo "+
+		    		"left join inspecciones "+
+		    		"on inspecciones.nroReclamo = reclamos.idreclamo "+
+		    		"left join resultados "+
+		    		"on resultados.idResult = inspecciones.codResultado "+
+		    		"order by reclamos.idreclamo desc");
 	
 		    
 		} catch (SQLException e)
@@ -152,7 +158,7 @@ public class ReclamoData
 				rec.setTipoReclamo(tr);
 				rec.setFechaIngreso(rs.getDate(10));
 				rec.setIdEstado(rs.getInt(11));
-			
+				rec.setEstadoAux(rs.getString(14));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
