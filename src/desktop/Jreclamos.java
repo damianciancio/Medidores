@@ -98,6 +98,9 @@ public class Jreclamos extends JInternalFrame {
 		txtNroReclamo = new JTextField();
 		txtNroReclamo.setColumns(10);
 		
+
+		this.txtNroReclamo.setEnabled(false);
+		
 		JLabel lblFechaIngreso = new JLabel("Fecha Ingreso");
 		
 		txtFechaIngreso = new JTextField();
@@ -362,6 +365,10 @@ public class Jreclamos extends JInternalFrame {
 			{
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
+			finally
+			{
+				actualizar();
+			}
 		}
 		catch(NumberFormatException e1)
 		{
@@ -399,8 +406,22 @@ public class Jreclamos extends JInternalFrame {
 	private Reclamo mapearADatos()
 	{
 		Reclamo rec = new Reclamo();
-		
-		
+		if (this.modo == ModoFrame.MODIFICACION )
+		{
+			rec.estado = State.ACTUALIZAR;
+			rec.setIdReclamo(Integer.parseInt(txtNroReclamo.getText()));
+		}
+		else
+			if(this.modo == ModoFrame.ALTA)
+			{
+				rec.estado = State.NUEVO;
+			}
+			else
+				if(this.modo == ModoFrame.BAJA)
+				{
+					rec.estado = State.ELIMINAR;
+					rec.setIdReclamo(Integer.parseInt(txtNroReclamo.getText()));
+				}
 		rec.setNomTitular(txtNomTitular.getText());
 		rec.setCalle(((Calle)cmbCalles.getSelectedItem()));
 		rec.setAltura(Integer.parseInt(txtAltura.getText()));
@@ -452,6 +473,12 @@ public class Jreclamos extends JInternalFrame {
 		{
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+	}
+	
+	public void actualizar()
+	{
+		this.table.removeAll();
+		this.setearTablaReclamos();
 	}
 	
 }

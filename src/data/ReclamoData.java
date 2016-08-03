@@ -19,15 +19,48 @@ public class ReclamoData
 			Connection con = Conexion.obtenerConexion("medidores");
 			Statement cmd = null;
 		    cmd = con.createStatement();
+		    if(rec.getLetraDir() == null)
+		    {
+		    	rec.setLetraDir("NULL");
+		    }/*
+		    else
+		    {
+		    	rec.setLetraDir("\'"+rec.getLetraDir()+"\'");
+		    }*/
+		    if(rec.getPiso() == null)
+		    {
+		    	rec.setPiso("NULL");
+		    }
 		    
-		    cmd.execute("insert  into reclamos "+ this.devolverStringInsert(rec));
+		    if(rec.getDepto() == null)
+		    {
+		    	rec.setDepto("NULL");
+		    }/*
+		    else
+		    {
+		    	rec.setDepto("\'"+rec.getDepto()+"\'");
+		    }*/
+		    
+		    
+		    cmd.execute("insert into reclamos "+
+		    "(nomTitular, codCalle, altura, piso, depto, "+
+		    "letraDir, bis, idtiporeclamo, fechaingreso, idestado) values "+ 
+		    /*"(\'"+rec.getNomTitular()+"\',\'"+rec.getCalle().getIdCalle()+"\', "+
+		    rec.getAltura()+","+rec.getPiso()+","+rec.getDepto()+","+rec.getLetraDir()+
+		    ",'"+rec.getBis()+"\',"+rec.getTipoReclamo().getIdTipoReclamo()+",\'"+rec.getFechaIngreso().toString()+
+		    "\',"+rec.getIdEstado()+")");*/
+		    "("+rec.getNomTitular()+","+rec.getCalle().getIdCalle()+", "+
+		    rec.getAltura()+","+rec.getPiso()+","+rec.getDepto()+","+rec.getLetraDir()+
+		    ",'"+rec.getBis()+","+rec.getTipoReclamo().getIdTipoReclamo()+","+rec.getFechaIngreso().toString()+
+		    ","+rec.getIdEstado()+")");
 		    
 		
-		    							
+		con.close();    							
 		} catch (SQLException e)
 		{
 			System.out.println("Fallo el insert");
 		}
+		
 	}
 	
 	

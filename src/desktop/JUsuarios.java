@@ -21,6 +21,7 @@ import business.entities.Calle;
 import business.entities.Usuario;
 import business.logic.CalleLogic;
 import business.logic.UsuarioLogic;
+import util.ModoFrame;
 import util.State;
 
 import javax.swing.JTable;
@@ -32,6 +33,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
 public class JUsuarios extends JInternalFrame {
+	public ModoFrame modo;
 	private JTextField txtID;
 	private JTextField txtNombreUsuario;
 	private JTable table;
@@ -47,6 +49,8 @@ public class JUsuarios extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JUsuarios() {
+		
+		this.modo = ModoFrame.ALTA;
 		setBounds(100, 100, 707, 528);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -148,6 +152,11 @@ public class JUsuarios extends JInternalFrame {
 		
 		JButton btnEditar = new JButton("Editar");
 		toolBar.add(btnEditar);
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//limpiarCampos();
+			}
+		});
 		
 		JButton btnBorrar = new JButton("Borrar");
 		toolBar.add(btnBorrar);

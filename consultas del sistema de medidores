@@ -16,7 +16,11 @@ order by reclamos.idreclamo desc;
 
 ######################################
 
-
+select * from reclamos
+order by reclamos.idReclamo desc;
 delete from callesrosario
 where callesrosario.callesRosariocol like '%"%';
 
+insert into reclamos 
+(reclamos.nomTitular, codCalle, altura, piso, depto, letraDir, bis, idtiporeclamo, fechaingreso, idestado) 
+values('Damian','23423',129,null,null,null,'NO',1,'2016-08-02',1);
