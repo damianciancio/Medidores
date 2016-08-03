@@ -44,7 +44,8 @@ public class CalleLogic
 	public ArrayList<Calle> devolvercalles() throws Exception
 	{
 		CalleData cd = new CalleData();
-		try {
+		try 
+		{
 			return cd.devolverCalles();
 		}
 		catch (Exception e)

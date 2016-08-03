@@ -32,7 +32,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.ListSelectionModel;
 
-public class Jreclamos extends JIT {
+public class Jreclamos extends JInternalFrame {
 	private JTable table;
 	private JTextField txtNomTitular;
 	private JTextField txtCalle;
@@ -44,7 +44,9 @@ public class Jreclamos extends JIT {
 	private JTextField txtLetraDir;
 	private JComboBox<business.entities.Calle> cmbCalles;
 	private JCheckBox chckbxBis;
-
+	public ModoFrame modo;
+	
+	
 	
 	public Jreclamos() 
 	{
@@ -72,6 +74,11 @@ public class Jreclamos extends JIT {
 		cmbCalles = new JComboBox();
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				buscarCoincidenciaCalle();
+			}
+		});
 		
 		JLabel lblAltura = new JLabel("Altura");
 		
@@ -248,6 +255,15 @@ public class Jreclamos extends JIT {
 
 	}
 	
+	public void setModo(ModoFrame mo)
+	{
+		this.modo = mo;
+	}
+	
+	public ModoFrame getModo()
+	{
+		return this.modo;
+	}
 	public void setearTablaReclamos()
 	{
 		ArrayList<Reclamo> rec;
@@ -284,6 +300,38 @@ public class Jreclamos extends JIT {
 		}
 						
 		
+	}
+	
+	public void buscarCoincidenciaCalle()
+	{
+		CalleLogic cl = new CalleLogic();
+		if(this.txtCalle.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(null, "Inserte nombre de calle a buscar");
+		}
+		else
+		{
+			ArrayList<Calle> calles = new ArrayList<Calle>();
+			try
+			{
+				calles = cl.buscarCalle(this.txtCalle.getText());
+			}
+			catch(Exception e)
+			{
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
+			finally
+			{
+				try
+				{
+					this.rellenarComboBoxCalles(calles, cmbCalles);
+				}
+				catch (Exception e)
+				{
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
+			}
+		}
 	}
 	
 	public void guardarCambios()

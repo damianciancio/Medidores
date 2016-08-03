@@ -184,7 +184,6 @@ public class JUsuarios extends JInternalFrame {
 		}
 		return valido;
 	}
-	
 	public void guardar(Usuario usr)
 	{
 		UsuarioLogic ul = new UsuarioLogic();
@@ -204,6 +203,4 @@ public class JUsuarios extends JInternalFrame {
 		txtID.setText("");
 		txtNombreUsuario.setText("");
 	}
-	
-	
 }
