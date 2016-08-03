@@ -1,0 +1,21 @@
+### SELECT EN data.ReclamosData
+
+SELECT idReclamo, nomTitular, codCalle, altura, 
+piso, depto, letraDir, bis, reclamos.idtiporeclamo, fechaIngreso, 
+idEstado, callesRosariocol, desctiporeclamo 
+FROM reclamos 
+inner join callesrosario 
+on codCalle = idcallesrosario 
+inner join tiporeclamo 
+on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo
+order by reclamos.idreclamo desc;
+
+######################################
+
+set @palabra = "pellegrini";
+select * 
+from callesrosario
+where callesrosario.callesRosariocol not like '%"%';
+
+delete from callesrosario
+where callesrosario.callesRosariocol like '%"%';

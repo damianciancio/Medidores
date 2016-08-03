@@ -24,12 +24,10 @@ public class CalleData {
 	
 		    cmd = con.createStatement();
 	
-		    rs = cmd.executeQuery("SELECT * FROM callesrosario");
+		    rs = cmd.executeQuery("SELECT * FROM callesrosario order by callesrosario.callesrosariocol asc");
 		    while(rs.next())
 			{
-				Calle ca = new Calle();
-				this.mapear(rs, ca);
-				calles.add(ca);
+				calles.add(this.mapear(rs));
 			}
 		
 		    
@@ -46,15 +44,77 @@ public class CalleData {
 		catch (Exception e)
 		{
 			System.out.println("No se cerro conexion. " + e.getStackTrace());
-			throw new Exception("Error al cerrar una conexion a la base de datos, si la aplicación se torna lento, guarde lo que necesita y reiniciela.", e);
+			throw new Exception("Error al cerrar una conexion a la base de datos, si la aplicaciï¿½n se torna lento, guarde lo que necesita y reiniciela.", e);
 		}
 		
 		return calles;
 	}
 	
 	
+	public ArrayList<Calle> buscarCoincidencias(String nCalle) throws Exception
+	{
+	
+		Connection con = Conexion.obtenerConexion("medidores");
+		ResultSet rs = null;
+		Statement cmd = null;
+		ArrayList<Calle> calles = new ArrayList<Calle>();
+			
+	
+		try {
+	
+		    cmd = con.createStatement();
+	
+		    rs = cmd.executeQuery("select * from callesrosario "
+		    +"where callesrosario.callesRosariocol like '%"+nCalle+"%';");
+		    while(rs.next())
+			{
+				Calle ca = new Calle();
+				ca.setIdCalle(rs.getString(1));
+				ca.setNomCalle(rs.getString(2));
+				calles.add(mapear(rs, ca));
+			}
+		
+		    
+		} catch (SQLException e)
+		{
+			System.out.println("Fallo el select. " + e.getStackTrace());
+			throw new Exception("Error al buscar las calles. Intente nuevamente. Si el problema persiste, llame a alguien.", e);
+		}
+		
+		try
+		{
+			con.close();
+		}
+		catch (Exception e)
+		{
+			System.out.println("No se cerro conexion. " + e.getStackTrace());
+			throw new Exception("Error al cerrar una conexion a la base de datos, si la aplicaciï¿½n se torna lento, guarde lo que necesita y reiniciela.", e);
+		}
+		
+		return calles;
+	}
+	
+	
+	
+	
 	public Calle mapear(ResultSet rs, Calle ca)
 	{
+		try {
+			if(rs.next()){
+				ca = new Calle();
+				ca.setIdCalle(rs.getString(1));
+				ca.setNomCalle(rs.getString(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return ca;
+	}
+	
+	public Calle mapear(ResultSet rs)
+	{
+		Calle ca = new Calle();
 		try {
 			if(rs.next()){
 				ca = new Calle();
@@ -121,7 +181,7 @@ public class CalleData {
 		catch (Exception e)
 		{
 			System.out.println("No se cerro conexion. " + e.getStackTrace());
-			throw new Exception("Error al cerrar una conexion a la base de datos, si la aplicación se torna lento, guarde lo que necesita y reiniciela.", e);
+			throw new Exception("Error al cerrar una conexion a la base de datos, si la aplicaciï¿½n se torna lento, guarde lo que necesita y reiniciela.", e);
 		}
 		finally
 		{
@@ -142,7 +202,7 @@ public class CalleData {
 		catch(Exception e)
 		{
 			System.out.println("No se elimino calle "+ e.getStackTrace());
-			throw new Exception("No se eliminó calle. Intente nuevamente. Si el problema persiste, llame a alguien",e);
+			throw new Exception("No se eliminï¿½ calle. Intente nuevamente. Si el problema persiste, llame a alguien",e);
 		}
 		finally
 		{
@@ -153,8 +213,8 @@ public class CalleData {
 			}
 			catch (Exception e)
 			{
-				System.out.println("No se cerró la conexión a la base de datos."+e.getStackTrace());
-				throw new Exception("No se cerró una conexión a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
+				System.out.println("No se cerrï¿½ la conexiï¿½n a la base de datos."+e.getStackTrace());
+				throw new Exception("No se cerrï¿½ una conexiï¿½n a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
 			}
 		}
 	}

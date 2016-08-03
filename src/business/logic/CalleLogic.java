@@ -26,6 +26,21 @@ public class CalleLogic
 		}
 	}
 	
+	public ArrayList<Calle> buscarCalle(String palabra) throws Exception
+	
+	{
+		try
+		{
+			CalleData cd = new CalleData();
+			return cd.buscarCoincidencias(palabra);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
+	
+	
 	public ArrayList<Calle> devolvercalles() throws Exception
 	{
 		CalleData cd = new CalleData();

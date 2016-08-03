@@ -258,6 +258,7 @@ public class Jreclamos extends JIT {
 		modelo.addColumn("Altura");
 		modelo.addColumn("Piso");
 		modelo.addColumn("Depto");
+		modelo.addColumn("Fecha");
 		table.setModel(modelo);
 		ReclamoLogic cat = new ReclamoLogic();
 		try
@@ -266,14 +267,15 @@ public class Jreclamos extends JIT {
 		Object[] arre;
 		for (Reclamo reclamo : rec) 
 		{
-			arre = new Object[6];
+			arre = new Object[7];
 			arre[0] = reclamo.getIdReclamo();
 			arre[1] = reclamo.getNomTitular();
 			arre[2] = reclamo.getCalle();
 			arre[3] = reclamo.getAltura();
 			arre[4] = reclamo.getPiso();
 			arre[5] = reclamo.getDepto();
-			modelo.addRow(arre);
+			arre[6] = reclamo.getFechaIngreso();
+ 			modelo.addRow(arre);
 		}
 		}
 		catch (Exception e)

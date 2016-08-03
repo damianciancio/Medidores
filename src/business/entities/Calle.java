@@ -3,6 +3,7 @@ package business.entities;
 public class Calle extends Entidad {
 	private String idCalle;
 	private String nomCalle;
+	
 	public String getIdCalle() {
 		return idCalle;
 	}
