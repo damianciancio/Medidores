@@ -1,6 +1,7 @@
 package data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,16 +18,16 @@ public class ReclamoData
 	{
 		try {
 			Connection con = Conexion.obtenerConexion("medidores");
-			Statement cmd = null;
-		    cmd = con.createStatement();
-		    if(rec.getLetraDir() == null)
+			PreparedStatement cmd = null;
+			String stringInsert = "insert into reclamos "+
+		    "(nomTitular, codCalle, altura, piso, depto, "+
+		    "letraDir, bis, idtiporeclamo, fechaingreso, idestado) values "+
+		    "( ?,?,?,?,?,?,?,?,?,?)";
+		    
+			if(rec.getLetraDir() == null)
 		    {
 		    	rec.setLetraDir("NULL");
-		    }/*
-		    else
-		    {
-		    	rec.setLetraDir("\'"+rec.getLetraDir()+"\'");
-		    }*/
+		    }
 		    if(rec.getPiso() == null)
 		    {
 		    	rec.setPiso("NULL");
@@ -35,24 +36,24 @@ public class ReclamoData
 		    if(rec.getDepto() == null)
 		    {
 		    	rec.setDepto("NULL");
-		    }/*
-		    else
-		    {
-		    	rec.setDepto("\'"+rec.getDepto()+"\'");
-		    }*/
+		    }
+			
+			cmd = con.prepareStatement(stringInsert);
+		    cmd.setString(1, rec.getNomTitular());
+		    cmd.setString(2, rec.getCalle().getIdCalle());
+		    cmd.setInt(3, rec.getAltura());
+		    cmd.setString(4, rec.getPiso());
+		    cmd.setString(5, rec.getDepto());
+		    cmd.setString(6, rec.getLetraDir());
+		    cmd.setString(7, rec.getBis());
+		    cmd.setInt(8, rec.getTipoReclamo().getIdTipoReclamo());
+		    cmd.setDate(9, rec.getFechaIngreso());
+		    cmd.setInt(10, rec.getIdEstado());
 		    
 		    
-		    cmd.execute("insert into reclamos "+
-		    "(nomTitular, codCalle, altura, piso, depto, "+
-		    "letraDir, bis, idtiporeclamo, fechaingreso, idestado) values "+ 
-		    /*"(\'"+rec.getNomTitular()+"\',\'"+rec.getCalle().getIdCalle()+"\', "+
-		    rec.getAltura()+","+rec.getPiso()+","+rec.getDepto()+","+rec.getLetraDir()+
-		    ",'"+rec.getBis()+"\',"+rec.getTipoReclamo().getIdTipoReclamo()+",\'"+rec.getFechaIngreso().toString()+
-		    "\',"+rec.getIdEstado()+")");*/
-		    "("+rec.getNomTitular()+","+rec.getCalle().getIdCalle()+", "+
-		    rec.getAltura()+","+rec.getPiso()+","+rec.getDepto()+","+rec.getLetraDir()+
-		    ",'"+rec.getBis()+","+rec.getTipoReclamo().getIdTipoReclamo()+","+rec.getFechaIngreso().toString()+
-		    ","+rec.getIdEstado()+")");
+		    
+		    
+		    cmd.executeUpdate();
 		    
 		
 		con.close();    							

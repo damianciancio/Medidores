@@ -1,5 +1,6 @@
 package data;
 import java.sql.*;
+import com.mysql.jdbc.MySQLConnection;
 
 
 public class Conexion {
@@ -24,8 +25,8 @@ public class Conexion {
 		Connection con = null;
 
 		try {
-
-		    con = DriverManager.getConnection(
+		    
+			con = DriverManager.getConnection(
 		            "jdbc:mysql://localhost/"+nombreBD
 		            + "?user=root&password=root&useSSL=false");
 		    	return con;

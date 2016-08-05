@@ -1,10 +1,12 @@
 package data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 
 import business.entities.TipoReclamo;
 
@@ -130,13 +132,16 @@ public class TipoReclamoData
 	public void eliminar(TipoReclamo tr)throws Exception
 	{
 		Connection con = Conexion.obtenerConexion("medidores");
-		Statement cmd = null;
+		PreparedStatement cmd = null;
+		String deleteString = "delete from tiporeclamo  where idtiporeclamo = ?";
 		try
 		{
+			con.setAutoCommit(false);
 			
-			cmd = con.createStatement();
-			cmd.executeQuery("delete from tiporeclamo "+
-								"where idtiporeclamo = " + tr.getIdTipoReclamo() );		
+			cmd = con.prepareStatement(deleteString);
+			cmd.setInt(1, tr.getIdTipoReclamo());
+			cmd.executeUpdate();
+			con.commit();
 		}
 		catch(Exception e)
 		{
