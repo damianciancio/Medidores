@@ -157,18 +157,21 @@ public class Login extends JFrame {
 			String str = new String(c);
 			usr.setUserNombre(txtUsuario.getText());
 			usr.setPass(str);
+			Util ut = new Util();
 			try
 			{
-				if(controladorLogin.validarUsuario(usr)!=null)
+				Usuario us = new Usuario();
+				us = ut.validarUsuario(usr);
+				if(us !=null && us.isHabilitado())
 				{
 					JOptionPane.showMessageDialog(null, "Sesion Iniciada", "Login", JOptionPane.INFORMATION_MESSAGE);
 					this.dispose();
-					ppal.setUsrActual(controladorLogin.validarUsuario(usr));
+					ppal.setUsrActual(us);
 					ppal.getFrmProgramaMedidores().setTitle("Programa medidores - Usuario actual: " + ppal.getUsrActual().getUserNombre());
 				} 
 				else 
 				{
-					JOptionPane.showMessageDialog(null, "Datos erróneos", "Login",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Datos errï¿½neos", "Login",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			catch(Exception e)

@@ -11,7 +11,9 @@ import javax.swing.table.DefaultTableModel;
 
 import business.entities.Calle;
 import business.entities.Reclamo;
+import business.entities.Usuario;
 import business.logic.ReclamoLogic;
+import business.logic.UsuarioLogic;
 
 public class Util {
 	
@@ -57,6 +59,17 @@ public class Util {
 		}
 	}
 
-	
+	public Usuario validarUsuario(Usuario usr) throws Exception
+	{
+		try
+		{
+			UsuarioLogic ul = new UsuarioLogic();
+			return ul.buscarUsuario(usr);
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+	}
 }
 

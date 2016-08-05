@@ -63,6 +63,7 @@ public class UsuarioData {
 				usr.setIdUsuario(rs.getInt(1));
 				usr.setUserNombre(rs.getString(2));
 				usr.setPass(rs.getString(3));
+				usr.setHabilitado(rs.getBoolean(4));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -103,8 +104,8 @@ public class UsuarioData {
 			}
 			catch (Exception e)
 			{
-				System.out.println("No se cerró la conexión a la base de datos.");
-				throw new Exception("No se cerró una conexión a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
+				System.out.println("No se cerrï¿½ la conexiï¿½n a la base de datos.");
+				throw new Exception("No se cerrï¿½ una conexiï¿½n a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
 			}
 		}
 		return find;
@@ -134,8 +135,8 @@ public class UsuarioData {
 			}
 			catch (Exception e)
 			{
-				System.out.println("No se cerró la conexión a la base de datos.");
-				throw new Exception("No se cerró una conexión a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
+				System.out.println("No se cerrï¿½ la conexiï¿½n a la base de datos.");
+				throw new Exception("No se cerrï¿½ una conexiï¿½n a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
 			}
 		}
 	}
@@ -164,8 +165,8 @@ public class UsuarioData {
 			}
 			catch (Exception e)
 			{
-				System.out.println("No se cerró la conexión a la base de datos.");
-				throw new Exception("No se cerró una conexión a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
+				System.out.println("No se cerrï¿½ la conexiï¿½n a la base de datos.");
+				throw new Exception("No se cerrï¿½ una conexiï¿½n a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
 			}
 			cmd = null;
 		}
@@ -186,7 +187,7 @@ public class UsuarioData {
 		catch(Exception e)
 		{
 			System.out.println("No se elimino usuario "+ e.getStackTrace());
-			throw new Exception("No se eliminó usuario. Intente nuevamente. Si el problema persiste, llame a alguien",e);
+			throw new Exception("No se eliminï¿½ usuario. Intente nuevamente. Si el problema persiste, llame a alguien",e);
 		}
 		finally
 		{
@@ -197,8 +198,8 @@ public class UsuarioData {
 			}
 			catch (Exception e)
 			{
-				System.out.println("No se cerró la conexión a la base de datos."+e.getStackTrace());
-				throw new Exception("No se cerró una conexión a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
+				System.out.println("No se cerrï¿½ la conexiï¿½n a la base de datos."+e.getStackTrace());
+				throw new Exception("No se cerrï¿½ una conexiï¿½n a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
 			}
 		}
 	}

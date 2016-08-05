@@ -31,6 +31,7 @@ import java.sql.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.ListSelectionModel;
+import javax.swing.JMenuBar;
 
 public class Jreclamos extends JInternalFrame {
 	private JTable table;
@@ -251,6 +252,18 @@ public class Jreclamos extends JInternalFrame {
 		CalleLogic ca = new CalleLogic();
 		try {
 			rellenarComboBoxCalles(ca.devolvercalles(), cmbCalles);
+			
+			JMenuBar menuBar = new JMenuBar();
+			setJMenuBar(menuBar);
+			
+			JButton btnRealizarInspeccion = new JButton("Realizar inspeccion");
+			btnRealizarInspeccion.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					realizarInspeccion();
+				}
+			});
+			btnRealizarInspeccion.setEnabled(true);
+			menuBar.add(btnRealizarInspeccion);
 		} catch (Exception e1) 
 		{
 			// TODO Auto-generated catch block
@@ -432,7 +445,7 @@ public class Jreclamos extends JInternalFrame {
 		return rec;
 	}
 	
-	private void mapearDesdeTabla() throws Exception
+	private Reclamo mapearDesdeTabla() throws Exception
 	{
 		if(table.getSelectedRow() == -1) throw new Exception("Seleccione una fila de la tabla para editarla"); 
 		else
@@ -453,19 +466,24 @@ public class Jreclamos extends JInternalFrame {
 			rec.setDepto((String)arre[5]);
 			rec.setFechaIngreso((Date)arre[6]);	
 			
-			this.txtNomTitular.setText(rec.getNomTitular());
-			this.txtCalle.setText(rec.getCalle().toString());
-			this.txtAltura.setText(Integer.toString(rec.getAltura()));
-			this.txtPiso.setText(rec.getPiso());
-			this.txtdepto.setText(rec.getDepto());
-			this.txtFechaIngreso.setText(rec.getFechaIngreso().toString());
+			return rec;
 		}
+	}
+	public void mapearACampos(Reclamo rec)
+	{
+		this.txtNomTitular.setText(rec.getNomTitular());
+		this.txtCalle.setText(rec.getCalle().toString());
+		this.txtAltura.setText(Integer.toString(rec.getAltura()));
+		this.txtPiso.setText(rec.getPiso());
+		this.txtdepto.setText(rec.getDepto());
+		this.txtFechaIngreso.setText(rec.getFechaIngreso().toString());
+
 	}
 	public void editar()
 	{
 		try
 		{
-			this.mapearDesdeTabla();
+			this.mapearACampos(this.mapearDesdeTabla());
 			this.setModo(ModoFrame.MODIFICACION);
 			this.guardarCambios();
 		}
@@ -480,5 +498,15 @@ public class Jreclamos extends JInternalFrame {
 		this.table.removeAll();
 		this.setearTablaReclamos();
 	}
-	
+	public void realizarInspeccion()
+	{
+		try
+		{
+			Reclamo re = mapearDesdeTabla();
+		}
+		catch (Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
 }

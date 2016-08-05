@@ -131,7 +131,7 @@ public class ReclamoData
 		    		"FROM reclamos "+ 
 		    		"inner join callesrosario "+
 		    		"on codCalle = idcallesrosario "+ 
-		    		"inner join tiporeclamo "+
+		    		"left join tiporeclamo "+
 		    		"on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo "+
 		    		"left join inspecciones "+
 		    		"on inspecciones.nroReclamo = reclamos.idreclamo "+

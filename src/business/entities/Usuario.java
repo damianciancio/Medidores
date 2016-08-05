@@ -9,6 +9,7 @@ public class Usuario extends Entidad {
 	private int idUsuario;
 	private String userNombre;
 	private String pass;
+	private boolean habilitado;
 	
 	public Usuario()
 	{
@@ -21,6 +22,15 @@ public class Usuario extends Entidad {
 		this.estado = es;
 	}
 	
+	public boolean isHabilitado() 
+	{
+		return habilitado;
+	}
+	
+	public void setHabilitado(boolean value)
+	{
+		this.habilitado = value;
+	}
 	
 	public int getIdUsuario() {
 		return idUsuario;
