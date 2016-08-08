@@ -17,10 +17,12 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
+import business.entities.TipoReclamo;
 import business.entities.Calle;
 import business.entities.Reclamo;
 import business.logic.CalleLogic;
 import business.logic.ReclamoLogic;
+import business.logic.TipoReclamoLogic;
 import util.ModoFrame;
 import util.State;
 
@@ -45,9 +47,8 @@ public class Jreclamos extends JInternalFrame {
 	private JTextField txtLetraDir;
 	private JComboBox<business.entities.Calle> cmbCalles;
 	private JCheckBox chckbxBis;
-	public ModoFrame modo;
-	
-	
+	public ModoFrame modo;	
+	private JComboBox<TipoReclamo> cmbTipoReclamo;
 	
 	public Jreclamos() 
 	{
@@ -130,6 +131,10 @@ public class Jreclamos extends JInternalFrame {
 		});
 		
 		chckbxBis = new JCheckBox("Bis");
+		
+		JLabel lblTipoReclamo = new JLabel("Tipo Reclamo");
+		
+		cmbTipoReclamo = new JComboBox();
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -151,15 +156,14 @@ public class Jreclamos extends JInternalFrame {
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 										.addComponent(lblDepartamento)
 										.addComponent(lblPiso)
-										.addComponent(lblLetraDir))
+										.addComponent(lblLetraDir)
+										.addComponent(lblFechaIngreso)
+										.addComponent(lblTipoReclamo))
 									.addPreferredGap(ComponentPlacement.RELATED)))
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(txtLetraDir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addContainerGap())
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 									.addGroup(gl_panel.createSequentialGroup()
-										.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+										.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 											.addGroup(gl_panel.createSequentialGroup()
 												.addPreferredGap(ComponentPlacement.RELATED)
 												.addComponent(lblNro)
@@ -171,23 +175,25 @@ public class Jreclamos extends JInternalFrame {
 													.addComponent(txtCalle, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
 												.addPreferredGap(ComponentPlacement.RELATED)
 												.addComponent(btnBuscar))
-											.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+											.addGroup(gl_panel.createSequentialGroup()
 												.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
 													.addComponent(txtAltura, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
 													.addComponent(txtPiso, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-													.addComponent(txtdepto, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
+													.addComponent(txtdepto, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+													.addComponent(txtLetraDir, Alignment.LEADING, 0, 0, Short.MAX_VALUE))
 												.addPreferredGap(ComponentPlacement.RELATED)
 												.addComponent(chckbxBis)
 												.addPreferredGap(ComponentPlacement.RELATED)))
 										.addGap(12))
 									.addGroup(gl_panel.createSequentialGroup()
 										.addComponent(txtNomTitular, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
-										.addContainerGap()))))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblFechaIngreso)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtFechaIngreso, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
+										.addContainerGap())
+									.addGroup(gl_panel.createSequentialGroup()
+										.addComponent(txtFechaIngreso, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addContainerGap()))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(cmbTipoReclamo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addContainerGap())))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(btnAceptar)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -232,9 +238,13 @@ public class Jreclamos extends JInternalFrame {
 						.addComponent(lblLetraDir))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtFechaIngreso, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblFechaIngreso))
-					.addPreferredGap(ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+						.addComponent(lblFechaIngreso)
+						.addComponent(txtFechaIngreso, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblTipoReclamo)
+						.addComponent(cmbTipoReclamo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCancelar)
 						.addComponent(btnAceptar))
@@ -250,8 +260,10 @@ public class Jreclamos extends JInternalFrame {
 		setearTablaReclamos();
 		scrollPane.setViewportView(table);
 		CalleLogic ca = new CalleLogic();
+		TipoReclamoLogic trl = new TipoReclamoLogic();
 		try {
 			rellenarComboBoxCalles(ca.devolvercalles(), cmbCalles);
+			rellenarComboBoxTipoReclamo(trl.devolverTiposReclamo(), cmbTipoReclamo);
 			
 			JMenuBar menuBar = new JMenuBar();
 			setJMenuBar(menuBar);
@@ -293,6 +305,7 @@ public class Jreclamos extends JInternalFrame {
 		modelo.addColumn("Depto");
 		modelo.addColumn("Fecha");
 		modelo.addColumn("Estado");
+		modelo.addColumn("Tipo");
 		table.setModel(modelo);
 		table.setColumnSelectionAllowed(false);
 		table.setCellSelectionEnabled(false);
@@ -304,7 +317,7 @@ public class Jreclamos extends JInternalFrame {
 			Object[] arre;
 			for (Reclamo reclamo : rec) 
 			{
-				arre = new Object[8];
+				arre = new Object[9];
 				arre[0] = reclamo.getIdReclamo();
 				arre[1] = reclamo.getNomTitular();
 				arre[2] = reclamo.getCalle();
@@ -313,6 +326,7 @@ public class Jreclamos extends JInternalFrame {
 				arre[5] = reclamo.getDepto();
 				arre[6] = reclamo.getFechaIngreso();
 				arre[7] = reclamo.getEstadoAux();
+				arre[8] = reclamo.getTipoReclamo();
 	 			modelo.addRow(arre);
 			}
 		}
@@ -416,6 +430,27 @@ public class Jreclamos extends JInternalFrame {
 		
 	}
 	
+	public void rellenarComboBoxTipoReclamo(ArrayList<TipoReclamo> arrayList, JComboBox<TipoReclamo> cmb) throws Exception, Exception, Exception
+	{
+		try
+		{
+
+			cmb.invalidate();
+			cmb.removeAllItems();
+			cmb.validate();
+			for(int i=0; i< arrayList.size();i++)
+			{
+				cmb.addItem(arrayList.get(i));
+			}
+			cmb.validate();
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+	}
+	
 	private Reclamo mapearADatos()
 	{
 		Reclamo rec = new Reclamo();
@@ -442,6 +477,7 @@ public class Jreclamos extends JInternalFrame {
 		rec.setPiso(txtPiso.getText());
 		rec.setDepto(txtdepto.getText());
 		rec.setFechaIngreso(Date.valueOf(txtFechaIngreso.getText()));
+		rec.setTipoReclamo((TipoReclamo)cmbTipoReclamo.getSelectedItem());
 		return rec;
 	}
 	
@@ -465,6 +501,7 @@ public class Jreclamos extends JInternalFrame {
 			rec.setPiso((String)arre[4]);
 			rec.setDepto((String)arre[5]);
 			rec.setFechaIngreso((Date)arre[6]);	
+			rec.setTipoReclamo((TipoReclamo)arre[8]);
 			
 			return rec;
 		}
@@ -477,6 +514,7 @@ public class Jreclamos extends JInternalFrame {
 		this.txtPiso.setText(rec.getPiso());
 		this.txtdepto.setText(rec.getDepto());
 		this.txtFechaIngreso.setText(rec.getFechaIngreso().toString());
+		this.cmbTipoReclamo.setSelectedItem(rec.getTipoReclamo());
 
 	}
 	public void editar()

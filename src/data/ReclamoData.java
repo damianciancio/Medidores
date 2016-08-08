@@ -24,31 +24,40 @@ public class ReclamoData
 		    "letraDir, bis, idtiporeclamo, fechaingreso, idestado) values "+
 		    "( ?,?,?,?,?,?,?,?,?,?)";
 		    
-			if(rec.getLetraDir() == null)
-		    {
-		    	rec.setLetraDir("NULL");
-		    }
-		    if(rec.getPiso() == null)
-		    {
-		    	rec.setPiso("NULL");
-		    }
-		    
-		    if(rec.getDepto() == null)
-		    {
-		    	rec.setDepto("NULL");
-		    }
+			
 			
 			cmd = con.prepareStatement(stringInsert);
 		    cmd.setString(1, rec.getNomTitular());
 		    cmd.setString(2, rec.getCalle().getIdCalle());
 		    cmd.setInt(3, rec.getAltura());
-		    cmd.setString(4, rec.getPiso());
-		    cmd.setString(5, rec.getDepto());
-		    cmd.setString(6, rec.getLetraDir());
+		    if(rec.getPiso() == null)
+		    {
+		    	cmd.setNull(4, java.sql.Types.VARCHAR);
+		    }
+		    else
+		    {
+		    	cmd.setString(4, rec.getPiso());
+		    }
+		    if(rec.getDepto() == null){
+		    	cmd.setNull(5, java.sql.Types.VARCHAR);
+		    }
+		    else{
+		    	cmd.setString(5, rec.getDepto());
+		    }
+		    if(rec.getLetraDir() == null){
+		    	cmd.setNull(6, java.sql.Types.VARCHAR);
+		    }
+		    else{
+		    	cmd.setString(6, rec.getLetraDir());
+		    }
 		    cmd.setString(7, rec.getBis());
 		    cmd.setInt(8, rec.getTipoReclamo().getIdTipoReclamo());
 		    cmd.setDate(9, rec.getFechaIngreso());
 		    cmd.setInt(10, rec.getIdEstado());
+		    
+		    
+		    
+		    
 		    
 		    
 		    

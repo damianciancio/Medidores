@@ -21,6 +21,9 @@ public class TipoReclamo extends Entidad
 	public void setDescTipoReclamo(String descTipoReclamo) {
 		this.descTipoReclamo = descTipoReclamo;
 	}
-	
+	public String toString()
+	{
+		return this.getDescTipoReclamo();
+	}
 	
 }

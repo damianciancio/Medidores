@@ -29,8 +29,7 @@ public class TipoReclamoData
 		    while(rs.next())
 			{
 				TipoReclamo tr = new TipoReclamo();
-				this.mapear(rs, tr);
-				tipos.add(tr);
+				tipos.add(mapear(rs));
 			}
 		
 		    
@@ -54,11 +53,12 @@ public class TipoReclamoData
 	}
 	
 	
-	public TipoReclamo mapear(ResultSet rs, TipoReclamo tr)
+	public TipoReclamo mapear(ResultSet rs)
 	{
+		TipoReclamo tr = new TipoReclamo();
 		try {
 			if(rs.next()){
-				tr = new TipoReclamo();
+				
 				tr.setIdTipoReclamo(rs.getInt(1));
 				tr.setDescTipoReclamo(rs.getString(2));
 			}
@@ -83,7 +83,7 @@ public class TipoReclamoData
 		    rs = cmd.executeQuery("select idtiporeclamo, desctiporeclamo "+
 		    						"from tiporeclamo "+
 		    						"where tiporeclamo.idtiporeclamo =" + tr.getIdTipoReclamo());
-		    find = this.mapear(rs, find);
+		    find = this.mapear(rs);
 		    
 		} catch (SQLException e)
 		{
