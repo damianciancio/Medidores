@@ -114,13 +114,7 @@ public class ReclamoData
 	}
 	
 	
-	public String devolverStringInsert(Reclamo rec)
-	{
-		String cadena = new String();
-		cadena = "(\""+rec.getNomTitular()+"\",\""+rec.getCalle().getIdCalle()+"\", "+rec.getAltura()+",\" "+rec.getPiso()+"\", \""+
-		"\", \""+rec.getDepto()+"\", \""+rec.getBis()+"\", "+rec.getTipoReclamo().getIdTipoReclamo()+" ,\""+rec.getFechaIngreso()+"\", "+rec.getIdEstado()+")";
-		return cadena;
-	}
+	
 	public ArrayList<Reclamo> devolverReclamos()
 	{
 	
@@ -209,19 +203,45 @@ public class ReclamoData
 		return rec;
 	}
 
-	public void actualizar(Reclamo re) throws Exception
+	public void actualizar(Reclamo rec) throws Exception
 	{
 		Connection con = Conexion.obtenerConexion("medidores");
-		Statement cmd = null;
+			PreparedStatement cmd = null;
 		
 		try
 		{
-			cmd = con.createStatement();
-			cmd.executeQuery("update reclamos (idReclamo, nomTitular, codCalle, "+
-		    "altura, piso, depto, letraDir, bis, idtiporeclamo, fechaIngreso, idEstado)values (" + re.getIdReclamo()+", "+re.getNomTitular()+", "+re.getCalle().getIdCalle()+", "+ 
-					re.getAltura()+", "+ re.getPiso()+", "+ re.getDepto()+ ", "+ re.getLetraDir()
-					+", "+ re.getBis()+ ", "+ re.getTipoReclamo().getIdTipoReclamo()+", "+re.getFechaIngreso().toString()+", "+re.getIdEstado()+")");
-			
+			String stringInsert = "update reclamos (nomTitular, codCalle, "+
+		    "altura, piso, depto, letraDir, bis, idtiporeclamo, fechaIngreso, idEstado)values (?,?,?,?,?,?,?,?,?,?)"
+		    + "where idReclamo = ?";
+			cmd = con.prepareStatement(stringInsert);
+		    cmd.setString(1, rec.getNomTitular());
+		    cmd.setString(2, rec.getCalle().getIdCalle());
+		    cmd.setInt(3, rec.getAltura());
+		    if(rec.getPiso() == null)
+		    {
+		    	cmd.setNull(4, java.sql.Types.VARCHAR);
+		    }
+		    else
+		    {
+		    	cmd.setString(4, rec.getPiso());
+		    }
+		    if(rec.getDepto() == null){
+		    	cmd.setNull(5, java.sql.Types.VARCHAR);
+		    }
+		    else{
+		    	cmd.setString(5, rec.getDepto());
+		    }
+		    if(rec.getLetraDir() == null){
+		    	cmd.setNull(6, java.sql.Types.VARCHAR);
+		    }
+		    else{
+		    	cmd.setString(6, rec.getLetraDir());
+		    }
+		    cmd.setString(7, rec.getBis());
+		    cmd.setInt(8, rec.getTipoReclamo().getIdTipoReclamo());
+		    cmd.setDate(9, rec.getFechaIngreso());
+		    cmd.setInt(10, rec.getIdEstado());
+		    cmd.setInt(11, rec.getIdReclamo());
 		}
 		catch (Exception e)
 		{

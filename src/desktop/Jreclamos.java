@@ -276,6 +276,25 @@ public class Jreclamos extends JInternalFrame {
 			});
 			btnRealizarInspeccion.setEnabled(true);
 			menuBar.add(btnRealizarInspeccion);
+			
+			JButton btnNuevo = new JButton("Nuevo");
+			btnNuevo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					nuevo();
+				}
+			});
+			menuBar.add(btnNuevo);
+			
+			JButton btnEditar = new JButton("Editar");
+			btnEditar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					editar();
+				}
+			});
+			menuBar.add(btnEditar);
+			
+			JButton btnEliminar = new JButton("Eliminar");
+			menuBar.add(btnEliminar);
 		} catch (Exception e1) 
 		{
 			// TODO Auto-generated catch block
@@ -363,51 +382,54 @@ public class Jreclamos extends JInternalFrame {
 	
 	public void guardarCambios()
 	{
-		try
+		if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "¿Está seguro?", "Advertencia", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE))
 		{
-			ReclamoLogic rl = new ReclamoLogic();
-			Reclamo r = new Reclamo();
-			switch (this.modo) {
-			case ALTA:
-				r.estado = State.NUEVO;
-				break;
-			case BAJA:
-				r.estado = State.ELIMINAR;
-				break;
-			case MODIFICACION:
-				r.estado = State.ACTUALIZAR;
-				break;
-			case CONSULTA:
-				break;
-
-			default:
-				break;
-			}
 			try
 			{
-				r = this.mapearADatos();
-				rl.guardaCambios(r);
+				ReclamoLogic rl = new ReclamoLogic();
+				Reclamo r = new Reclamo();
+				switch (this.modo) {
+				case ALTA:
+					r.estado = State.NUEVO;
+					break;
+				case BAJA:
+					r.estado = State.ELIMINAR;
+					break;
+				case MODIFICACION:
+					r.estado = State.ACTUALIZAR;
+					break;
+				case CONSULTA:
+					break;
+	
+				default:
+					break;
+				}
+				try
+				{
+					r = this.mapearADatos();
+					rl.guardaCambios(r);
+				}
+				catch (Exception e)
+				{
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
+				finally
+				{
+					actualizar();
+				}
 			}
-			catch (Exception e)
+			
+			catch(NumberFormatException e1)
 			{
-				JOptionPane.showMessageDialog(null, e.getMessage());
+				JOptionPane.showMessageDialog(null, "Ingrese una altura válida","Error", JOptionPane.ERROR_MESSAGE);
 			}
-			finally
+			
+			
+			catch(IllegalArgumentException e2)
 			{
-				actualizar();
+				JOptionPane.showMessageDialog(null, "Ingrese una fecha válida","Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		catch(NumberFormatException e1)
-		{
-			JOptionPane.showMessageDialog(null, "Ingrese una altura válida","Error", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		
-		catch(IllegalArgumentException e2)
-		{
-			JOptionPane.showMessageDialog(null, "Ingrese una fecha válida","Error", JOptionPane.ERROR_MESSAGE);
-		}
-		
 	}
 	public void rellenarComboBoxCalles(ArrayList<Calle> arrayList, JComboBox<Calle> cmb) throws Exception, Exception, Exception
 	{
@@ -474,8 +496,24 @@ public class Jreclamos extends JInternalFrame {
 		rec.setCalle(((Calle)cmbCalles.getSelectedItem()));
 		rec.setAltura(Integer.parseInt(txtAltura.getText()));
 		rec.setBis(chckbxBis.isSelected());
-		rec.setPiso(txtPiso.getText());
-		rec.setDepto(txtdepto.getText());
+		
+		if(txtPiso.getText().equals(""))
+		{
+			rec.setPiso(null);
+		}
+		else
+		{
+			rec.setPiso(txtPiso.getText());
+		}
+		
+		if(txtdepto.getText().equals(""))
+		{
+			rec.setDepto(null);
+		}
+		else
+		{
+			rec.setDepto(txtdepto.getText());
+		}
 		rec.setFechaIngreso(Date.valueOf(txtFechaIngreso.getText()));
 		rec.setTipoReclamo((TipoReclamo)cmbTipoReclamo.getSelectedItem());
 		return rec;
@@ -508,6 +546,7 @@ public class Jreclamos extends JInternalFrame {
 	}
 	public void mapearACampos(Reclamo rec)
 	{
+		this.txtNroReclamo.setText(Integer.toString(rec.getIdReclamo()));
 		this.txtNomTitular.setText(rec.getNomTitular());
 		this.txtCalle.setText(rec.getCalle().toString());
 		this.txtAltura.setText(Integer.toString(rec.getAltura()));
@@ -517,13 +556,24 @@ public class Jreclamos extends JInternalFrame {
 		this.cmbTipoReclamo.setSelectedItem(rec.getTipoReclamo());
 
 	}
+	public void nuevo()
+	{
+		try 
+		{
+			this.limpiarCampos();
+			this.setModo(ModoFrame.ALTA);
+		} 
+		catch (Exception e) 
+		{
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+	}
 	public void editar()
 	{
 		try
 		{
 			this.mapearACampos(this.mapearDesdeTabla());
 			this.setModo(ModoFrame.MODIFICACION);
-			this.guardarCambios();
 		}
 		catch (Exception e)
 		{
@@ -546,5 +596,17 @@ public class Jreclamos extends JInternalFrame {
 		{
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+	}
+	public void limpiarCampos() throws Exception
+	{
+		this.txtAltura.setText("");
+		this.txtCalle.setText("");
+		this.txtdepto.setText("");
+		this.txtFechaIngreso.setText("");
+		this.txtLetraDir.setText("");
+		this.txtNomTitular.setText("");
+		this.txtPiso.setText("");
+		this.txtNroReclamo.setText("");
+		this.rellenarComboBoxCalles((new CalleLogic()).devolvercalles(), cmbCalles);
 	}
 }
