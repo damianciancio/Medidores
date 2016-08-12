@@ -127,7 +127,10 @@ public class Medidores {
 			public void actionPerformed(ActionEvent arg0) {
 				Jreclamos re = new Jreclamos();
 				agregarVentana(re);
-				agregarVentana(new JInspeccion(re.getResultado()));
+				if(re.isClosed())
+				{
+					agregarVentana(new JInspeccion(re.getResultado()));
+				}
 				
 			}
 		});

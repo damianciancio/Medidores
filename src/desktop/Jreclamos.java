@@ -59,7 +59,7 @@ public class Jreclamos extends JInternalFrame {
 
 	public Jreclamos() 
 	{
-		resultado = null;
+		
 		this.setModo(ModoFrame.ALTA);
 		setBounds(100, 100, 677, 518);
 		
@@ -308,7 +308,7 @@ public class Jreclamos extends JInternalFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
+		resultado = null;
 	}
 	
 	public void setModo(ModoFrame mo)
