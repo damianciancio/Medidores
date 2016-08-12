@@ -34,6 +34,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.ListSelectionModel;
 import javax.swing.JMenuBar;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 public class Jreclamos extends JInternalFrame {
 	private JTable table;
@@ -49,9 +51,15 @@ public class Jreclamos extends JInternalFrame {
 	private JCheckBox chckbxBis;
 	public ModoFrame modo;	
 	private JComboBox<TipoReclamo> cmbTipoReclamo;
+	private Reclamo resultado;
 	
+	public Reclamo getResultado() {
+		return resultado;
+	}
+
 	public Jreclamos() 
 	{
+		resultado = null;
 		this.setModo(ModoFrame.ALTA);
 		setBounds(100, 100, 677, 518);
 		
@@ -590,12 +598,14 @@ public class Jreclamos extends JInternalFrame {
 	{
 		try
 		{
-			Reclamo re = mapearDesdeTabla();
+			resultado = mapearDesdeTabla();
 		}
 		catch (Exception e)
 		{
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+		
+		this.dispose();
 	}
 	public void limpiarCampos() throws Exception
 	{

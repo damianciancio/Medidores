@@ -120,29 +120,15 @@ public class Medidores {
 		
 		dskPane = new JDesktopPane();
 		frmProgramaMedidores.getContentPane().add(dskPane, BorderLayout.CENTER);
-		dskPane.setLayout(new BorderLayout(0, 0));
-		
-//		JInternalFrame ifrABMReclamos = new JInternalFrame("ABM Reclamos");
-//		dskPane.add(ifrABMReclamos);
-//		ifrABMReclamos.setVisible(false);
-//		AbmReclamos pnlAbmReclamos = new AbmReclamos(ifrABMReclamos);
-//		
-//		tblReclamos = new JTable();
-//		
-//		
-//		setearTablaReclamos();
-//		
-//		ifrABMReclamos.getContentPane().add(jscroll, BorderLayout.EAST);
-		
-		
-		
-		
+		dskPane.setLayout(new BorderLayout(0, 0));		
 		
 		JMenuItem mntmReclamos = new JMenuItem("Reclamos");
 		mntmReclamos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Jreclamos re = new Jreclamos();
+				agregarVentana(re);
+				agregarVentana(new JInspeccion(re.getResultado()));
 				
-				agregarVentana(new Jreclamos());
 			}
 		});
 		mnAbm.add(mntmReclamos);
