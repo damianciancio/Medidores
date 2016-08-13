@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import business.entities.*;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.ActionEvent;
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -125,13 +129,8 @@ public class Medidores {
 		JMenuItem mntmReclamos = new JMenuItem("Reclamos");
 		mntmReclamos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Jreclamos re = new Jreclamos();
-				agregarVentana(re);
-				if(re.isClosed())
-				{
-					agregarVentana(new JInspeccion(re.getResultado()));
-				}
-				
+				reclamo();
+					
 			}
 		});
 		mnAbm.add(mntmReclamos);
@@ -225,5 +224,41 @@ public class Medidores {
 		actual.setVisible(true);
 		dskPane.add(actual);
 			
+	}
+	public void reclamo()
+	{
+		Jreclamos re = new Jreclamos();
+		agregarVentana(re);
+		re.addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				if (re.getResultado() != null)
+				{
+					agregarVentana(new JInspeccion(re.getResultado()));
+				}
+			}
+		});;
+		
+	
 	}
 }

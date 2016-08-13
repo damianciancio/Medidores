@@ -59,7 +59,7 @@ public class Jreclamos extends JInternalFrame {
 
 	public Jreclamos() 
 	{
-		
+		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.setModo(ModoFrame.ALTA);
 		setBounds(100, 100, 677, 518);
 		
@@ -605,7 +605,7 @@ public class Jreclamos extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		
-		this.dispose();
+		this.hide();
 	}
 	public void limpiarCampos() throws Exception
 	{
