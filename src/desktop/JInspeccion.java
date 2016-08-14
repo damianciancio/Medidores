@@ -2,6 +2,8 @@ package desktop;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -13,6 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import business.entities.Reclamo;
+import util.Action;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class JInspeccion extends JInternalFrame {
 
@@ -25,6 +30,13 @@ public class JInspeccion extends JInternalFrame {
 		JPanel panelInferior = new JPanel();
 		
 		JButton btnSiguiente = new JButton("Siguiente");
+		btnSiguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				siguiente();
+			}
+
+			
+		});
 		
 		JButton btnAtrs = new JButton("Atrás");
 		
@@ -106,8 +118,49 @@ public class JInspeccion extends JInternalFrame {
 		lblNombreTitular.setText(re.getNomTitular());
 		lblDireccion.setText(re.getCalle().getNomCalle()+ ' ' + re.getAltura());
 		lblFechaIngreso.setText(re.getFechaIngreso().toString());
+		JDatosAtendiente panel1 = new JDatosAtendiente();
+		btnAtrs.setEnabled(false);
+		panel1.addComponentListener(new ComponentListener(){
 
+			@Override
+			public void componentResized(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				if(panel1.getAccion() == Action.SIGUIENTE)
+				{
+					agregarPanel2();
+				}
+			}
+
+			});
+		this.getContentPane().add(panel1, BorderLayout.CENTER);
 
 	}
-
+	private void agregarPanel2() {
+		JPanel2 panel2 = new JPanel2();
+		this.getContentPane().add(panel2, BorderLayout.CENTER);
+		panel2.setVisible(true);
+	}
+	
+	private void siguiente() {
+		this.getContentPane().getComponent(3).setVisible(false);
+		
+	}
 }
