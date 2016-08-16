@@ -29,26 +29,22 @@ public class JInspeccion extends JInternalFrame {
 		
 		JPanel panelInferior = new JPanel();
 		
-		JButton btnSiguiente = new JButton("Siguiente");
-		btnSiguiente.addActionListener(new ActionListener() {
+		JButton btnFinalizar = new JButton("Finalizar");
+		btnFinalizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				siguiente();
+				
 			}
 
 			
 		});
 		
-		JButton btnAtrs = new JButton("Atrás");
-		
 		JButton btnCancelar = new JButton("Cancelar");
 		GroupLayout gl_panelInferior = new GroupLayout(panelInferior);
 		gl_panelInferior.setHorizontalGroup(
-			gl_panelInferior.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panelInferior.createSequentialGroup()
-					.addContainerGap(570, Short.MAX_VALUE)
-					.addComponent(btnAtrs)
-					.addGap(124)
-					.addComponent(btnSiguiente)
+			gl_panelInferior.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelInferior.createSequentialGroup()
+					.addContainerGap(773, Short.MAX_VALUE)
+					.addComponent(btnFinalizar)
 					.addGap(138)
 					.addComponent(btnCancelar)
 					.addContainerGap())
@@ -58,8 +54,7 @@ public class JInspeccion extends JInternalFrame {
 				.addGroup(gl_panelInferior.createSequentialGroup()
 					.addGroup(gl_panelInferior.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCancelar)
-						.addComponent(btnAtrs)
-						.addComponent(btnSiguiente))
+						.addComponent(btnFinalizar))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		panelInferior.setLayout(gl_panelInferior);
@@ -119,48 +114,8 @@ public class JInspeccion extends JInternalFrame {
 		lblDireccion.setText(re.getCalle().getNomCalle()+ ' ' + re.getAltura());
 		lblFechaIngreso.setText(re.getFechaIngreso().toString());
 		JDatosAtendiente panel1 = new JDatosAtendiente();
-		btnAtrs.setEnabled(false);
-		panel1.addComponentListener(new ComponentListener(){
 
-			@Override
-			public void componentResized(ComponentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void componentShown(ComponentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				// TODO Auto-generated method stub
-				if(panel1.getAccion() == Action.SIGUIENTE)
-				{
-					agregarPanel2();
-				}
-			}
-
-			});
 		this.getContentPane().add(panel1, BorderLayout.CENTER);
 
-	}
-	private void agregarPanel2() {
-		JPanel2 panel2 = new JPanel2();
-		this.getContentPane().add(panel2, BorderLayout.CENTER);
-		panel2.setVisible(true);
-	}
-	
-	private void siguiente() {
-		this.getContentPane().getComponent(3).setVisible(false);
-		
 	}
 }
