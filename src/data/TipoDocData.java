@@ -26,9 +26,7 @@ public class TipoDocData
 		    rs = cmd.executeQuery("SELECT * FROM tiposdoc");
 		    while(rs.next())
 			{
-				TipoDoc td = new TipoDoc();
-				this.mapear(rs, td);
-				tipod.add(td);
+				tipod.add(this.mapear(rs));
 			}
 		
 		    
@@ -52,11 +50,11 @@ public class TipoDocData
 	}
 	
 	
-	public TipoDoc mapear(ResultSet rs, TipoDoc td)
+	public TipoDoc mapear(ResultSet rs)
 	{
+		TipoDoc td = new TipoDoc();
 		try {
 			if(rs.next()){
-				td = new TipoDoc();
 				td.setIdTipoDOc(rs.getString(1));
 				td.setDescTipoDoc(rs.getString(2));
 			}
@@ -81,7 +79,7 @@ public class TipoDocData
 		    rs = cmd.executeQuery("select idtipo, desctipo "+
 		    						"from tiposdoc "+
 		    						"where tiposdoc.idtipo =" + td.getIdTipoDoc());
-		    find = this.mapear(rs, find);
+		    find = this.mapear(rs);
 		    
 		} catch (SQLException e)
 		{

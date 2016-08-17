@@ -18,5 +18,9 @@ public class Marca extends Entidad {
 		this.descMarca = descMarca;
 	}
 	
+	public String toString()
+	{
+		return this.descMarca;
+	}
 
 }

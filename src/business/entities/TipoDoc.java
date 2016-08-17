@@ -17,6 +17,10 @@ public class TipoDoc extends Entidad
 	public void setDescTipoDoc(String descTipoDoc) {
 		this.descTipoDoc = descTipoDoc;
 	}
+	public String toString()
+	{
+		return this.descTipoDoc;
+	}
 	
 	
 }

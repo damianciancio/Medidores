@@ -25,10 +25,8 @@ public class ResultadoData
 	
 		    rs = cmd.executeQuery("SELECT * FROM resultados");
 		    while(rs.next())
-			{
-				Resultado re = new Resultado();
-				this.mapear(rs, re);
-				resultados.add(re);
+			{	
+		    	resultados.add(this.mapear(rs));
 			}
 		
 		    
@@ -52,11 +50,13 @@ public class ResultadoData
 	}
 	
 	
-	public Resultado mapear(ResultSet rs, Resultado re)
+	public Resultado mapear(ResultSet rs)
 	{
+		Resultado re = new Resultado();
 		try {
-			if(rs.next()){
-				re = new Resultado();
+			
+			if(rs.next())
+			{
 				re.setIdResultado(rs.getInt(1));
 				re.setDescResultado(rs.getString(2));
 			}
@@ -81,7 +81,7 @@ public class ResultadoData
 		    rs = cmd.executeQuery("select idresult, descresult "+
 		    						"from resultados "+
 		    						"where resultados.idresult =" + re.getIdResultado());
-		    find = this.mapear(rs, find);
+		    find = this.mapear(rs);
 		    
 		} catch (SQLException e)
 		{

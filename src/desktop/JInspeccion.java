@@ -26,41 +26,7 @@ public class JInspeccion extends JInternalFrame {
 		setBounds(100, 100, 1124, 790);
 		
 		ArrayList<JPanel> paneles = new ArrayList<JPanel>();
-		
-		JPanel panelInferior = new JPanel();
-		
-		JButton btnFinalizar = new JButton("Finalizar");
-		btnFinalizar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-
-			
-		});
-		
-		JButton btnCancelar = new JButton("Cancelar");
-		GroupLayout gl_panelInferior = new GroupLayout(panelInferior);
-		gl_panelInferior.setHorizontalGroup(
-			gl_panelInferior.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panelInferior.createSequentialGroup()
-					.addContainerGap(773, Short.MAX_VALUE)
-					.addComponent(btnFinalizar)
-					.addGap(138)
-					.addComponent(btnCancelar)
-					.addContainerGap())
-		);
-		gl_panelInferior.setVerticalGroup(
-			gl_panelInferior.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelInferior.createSequentialGroup()
-					.addGroup(gl_panelInferior.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnCancelar)
-						.addComponent(btnFinalizar))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		panelInferior.setLayout(gl_panelInferior);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		//getContentPane().add(panelSuperior,BorderLayout.NORTH);
-		getContentPane().add(panelInferior,BorderLayout.SOUTH);
 		
 		JPanel panelPrincipal = new JPanel();
 		getContentPane().add(panelPrincipal, BorderLayout.CENTER);
@@ -113,7 +79,7 @@ public class JInspeccion extends JInternalFrame {
 		lblNombreTitular.setText(re.getNomTitular());
 		lblDireccion.setText(re.getCalle().getNomCalle()+ ' ' + re.getAltura());
 		lblFechaIngreso.setText(re.getFechaIngreso().toString());
-		JDatosAtendiente panel1 = new JDatosAtendiente();
+		JDatosAtendiente panel1 = new JDatosAtendiente(re);
 
 		this.getContentPane().add(panel1, BorderLayout.CENTER);
 

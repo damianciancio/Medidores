@@ -26,9 +26,7 @@ public class MarcaData
 		    rs = cmd.executeQuery("SELECT * FROM marcas");
 		    while(rs.next())
 			{
-				Marca ma = new Marca();
-				this.mapear(rs, ma);
-				marcas.add(ma);
+				marcas.add(this.mapear(rs));
 			}
 		
 		    
@@ -52,11 +50,11 @@ public class MarcaData
 	}
 	
 	
-	public Marca mapear(ResultSet rs, Marca ma)
+	public Marca mapear(ResultSet rs)
 	{
+		Marca ma = new Marca();
 		try {
 			if(rs.next()){
-				ma = new Marca();
 				ma.setIdMarca(rs.getInt(1));
 				ma.setDescMarca(rs.getString(2));
 			}
@@ -81,7 +79,7 @@ public class MarcaData
 		    rs = cmd.executeQuery("select idMarca, descMarca "+
 		    						"from marcas "+
 		    						"where marcas.idIdMarca =" + ma.getIdMarca());
-		    find = this.mapear(rs, find);
+		    find = this.mapear(rs);
 		    
 		} catch (SQLException e)
 		{

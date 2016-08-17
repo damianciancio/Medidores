@@ -15,4 +15,9 @@ public class Lectura {
 	public void setError(float error) {
 		this.error = error;
 	}
+	public Lectura(float lectura, float error)
+	{
+		this.lectura = lectura;
+		this.error = error;
+	}
 }
