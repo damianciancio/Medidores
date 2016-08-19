@@ -450,10 +450,8 @@ public class JDatosAtendiente extends JPanel {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 	}
-	
-	
-	
-	public boolean validar()
+		
+	private boolean validar()
 	{
 		boolean valido = true;
 		String cadenaError = "";
@@ -605,7 +603,7 @@ public class JDatosAtendiente extends JPanel {
 		return valido;
 	}
 	
-	public void ponerPromedio()
+	private void ponerPromedio()
 	{
 		if(!txtError1.getText().equals("")&&!txtError2.getText().equals("")&&!txtError3.getText().equals(""))
 		{
@@ -624,8 +622,7 @@ public class JDatosAtendiente extends JPanel {
 		}
 	}
 
-	
-	public void rellenarComboBoxMarca(ArrayList<Marca> arrayList, JComboBox<Marca> cmb) throws Exception
+	private void rellenarComboBoxMarca(ArrayList<Marca> arrayList, JComboBox<Marca> cmb) throws Exception
 	{
 		try
 		{
@@ -646,7 +643,7 @@ public class JDatosAtendiente extends JPanel {
 		
 	}
 	
-	public void rellenarComboBoxString(ArrayList<String> arrayList, JComboBox<String> cmb) throws Exception
+	private void rellenarComboBoxString(ArrayList<String> arrayList, JComboBox<String> cmb) throws Exception
 	{
 		try
 		{
@@ -667,28 +664,7 @@ public class JDatosAtendiente extends JPanel {
 		
 	}
 
-	
-	public void rellenarComboBoxTipoDoc(ArrayList<TipoDoc> arrayList, JComboBox<TipoDoc> cmb) throws Exception
-	{
-		try
-		{
-
-			cmb.invalidate();
-			cmb.removeAllItems();
-			cmb.validate();
-			for(int i=0; i< arrayList.size();i++)
-			{
-				cmb.addItem(arrayList.get(i));
-			}
-			cmb.validate();
-		}
-		catch(Exception e)
-		{
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}
-		
-	}
-	public void rellenarComboBoxResultado(ArrayList<Resultado> arrayList, JComboBox<Resultado> cmb) throws Exception
+	private void rellenarComboBoxTipoDoc(ArrayList<TipoDoc> arrayList, JComboBox<TipoDoc> cmb) throws Exception
 	{
 		try
 		{
@@ -709,7 +685,28 @@ public class JDatosAtendiente extends JPanel {
 		
 	}
 
-	public void finalizar()
+	private void rellenarComboBoxResultado(ArrayList<Resultado> arrayList, JComboBox<Resultado> cmb) throws Exception
+	{
+		try
+		{
+
+			cmb.invalidate();
+			cmb.removeAllItems();
+			cmb.validate();
+			for(int i=0; i< arrayList.size();i++)
+			{
+				cmb.addItem(arrayList.get(i));
+			}
+			cmb.validate();
+		}
+		catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+	}
+
+	private void finalizar()
 	{
 		if(validar())
 		{
@@ -718,7 +715,7 @@ public class JDatosAtendiente extends JPanel {
 		}
 	}
 	
-	public Inspeccion mapearADatos()
+	private Inspeccion mapearADatos()
 	{
 		Inspeccion in = new Inspeccion();
 		in.setAtendiente(txtatendientenomap.getText());
@@ -755,5 +752,3 @@ public class JDatosAtendiente extends JPanel {
 		return in;
 	}
 }
-
-
