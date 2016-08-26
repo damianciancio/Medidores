@@ -3,7 +3,7 @@ package business.entities;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class Inspeccion {
+public class Inspeccion extends Entidad{
 	private int idInspeccion;
 	private int nroReclamo;
 	private String nroMedidor;
@@ -24,7 +24,7 @@ public class Inspeccion {
 	private boolean marchaVacio;
 	private boolean perdidas;
 	private float errorGral;
-	private String estado;
+	private String estadoIns;
 	private Resultado resultado;
 	private Lectura[] lecturas;
 	private String observaciones;
@@ -152,10 +152,10 @@ public class Inspeccion {
 		this.errorGral = errorGral;
 	}
 	public String getEstado() {
-		return estado;
+		return estadoIns;
 	}
 	public void setEstado(String estado) {
-		this.estado = estado;
+		this.estadoIns = estado;
 	}
 	public Resultado getResultado() {
 		return resultado;

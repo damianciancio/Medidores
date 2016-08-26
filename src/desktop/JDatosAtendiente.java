@@ -23,6 +23,7 @@ import business.entities.Marca;
 import business.entities.Reclamo;
 import business.entities.Resultado;
 import business.entities.TipoDoc;
+import business.logic.InspeccionLogic;
 import business.logic.MarcaLogic;
 import business.logic.ResultadoLogic;
 import business.logic.TipoDocLogic;
@@ -710,8 +711,16 @@ public class JDatosAtendiente extends JPanel {
 	{
 		if(validar())
 		{
+			try
+			{
 			Inspeccion in = new Inspeccion();
 			in = mapearADatos();
+			this.guardarCambios(in);
+			}
+			catch(Exception e)
+			{
+				JOptionPane.showMessageDialog(this, e.getMessage());
+			}
 		}
 	}
 	
@@ -750,5 +759,11 @@ public class JDatosAtendiente extends JPanel {
 		
 		
 		return in;
+	}
+
+	private void guardarCambios(Inspeccion in) throws Exception
+	{
+		InspeccionLogic il = new InspeccionLogic();
+		il.guardaCambios(in);
 	}
 }
