@@ -42,10 +42,10 @@ public class InspeccionLogic
 			{
 				id.agregarInspeccion(in);
 			}
-//			else if (in.estado == State.NUEVO)
-//			{
-//				//id.actualizar(in);
-//			}
+			else if (in.estado == State.NUEVO)
+			{
+				id.agregarInspeccion(in);
+			}
 //			else if (in.estado == State.ELIMINAR)
 //			{
 //				id.eliminar(in);

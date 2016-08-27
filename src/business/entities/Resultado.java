@@ -17,6 +17,8 @@ public class Resultado extends Entidad
 	public void setDescResultado(String descResultado) {
 		this.descResultado = descResultado;
 	}
-	
-	
+	public String toString()
+	{
+		return this.getDescResultado();
+	}
 }

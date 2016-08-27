@@ -14,7 +14,8 @@ import business.entities.TipoReclamo;
 
 public class InspeccionData {
 	
-		public void agregarInspeccion(Inspeccion ins){
+		public void agregarInspeccion(Inspeccion ins) throws SQLException, Exception
+		{
 		try {
 			Connection con = Conexion.obtenerConexion("medidores");
 			PreparedStatement cmd = null;
@@ -24,7 +25,7 @@ public class InspeccionData {
 		    + "nClase, estadoContadorAntes, estadoContadorDespues, estadoGeneral, estadoConexion, "
 		    + "marchaVacio, perdidas, errorGral, estado, codResultado, lectura1, error1, "
 		    + "lectura2, error2, lectura3, error3, observaciones, atendiente) values "+
-		    "(,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		    "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		    
 			
 			
@@ -32,7 +33,7 @@ public class InspeccionData {
 		    cmd.setInt(1, ins.getNroReclamo());
 		    cmd.setString(2, ins.getNroMedidor());
 		    cmd.setDate(3, ins.getFechaInspeccion());
-		    cmd.setString(4, ins.getTipoDoc().getDescTipoDoc());
+		    cmd.setString(4, ins.getTipoDoc().getIdTipoDoc());
 		    cmd.setInt(5, ins.getNroDoc());
 		    cmd.setInt(6, ins.getMarca().getIdMarca());
 		    cmd.setString(7, ins.getModelo());
@@ -66,12 +67,23 @@ public class InspeccionData {
 		    
 		    
 		    cmd.executeUpdate();
+		    int a = 0;
+		    int b = 1;
+		    int c = b/a;
 		    
 		
 		con.close();    							
 		} catch (SQLException e)
 		{
-			System.out.println("Fallo el insert");
+			throw (new Exception("No se pudo insertar en la base de datos",e));
+		}
+		catch(ArithmeticException ae)
+		{
+			throw new Exception("Insertado correctamente",ae);
+		}
+		catch (Exception ex)
+		{
+			throw new Exception("No se pudo insertar en la base de datos", ex);
 		}
 		
 	}
@@ -132,7 +144,7 @@ public class InspeccionData {
 //	
 //		    cmd = con.createStatement();
 //	
-//		    rs = cmd.executeQuery("select * FROM reclamos");
+//		    rs = cmd.executeQuery("select * FROM INSPECCIONES");
 //		    
 //		} catch (SQLException e)
 //		{
@@ -163,29 +175,13 @@ public class InspeccionData {
 //		return ins;
 //	}
 //	
-//	public Reclamo mapear (ResultSet rs)
+//	public Inspeccion mapear (ResultSet rs)
 //	{
-//		Reclamo rec = new Reclamo();
+//		Inspeccion in = new Inspeccion();
 //		try {
 //				
-//				TipoReclamo tr = new TipoReclamo();
-//				tr.setIdTipoReclamo(rs.getInt(9));
-//				tr.setDescTipoReclamo(rs.getString(13));
-//				Calle ca = new Calle();
-//				ca.setIdCalle(rs.getString(3));
-//				ca.setNomCalle(rs.getString(12));
-//				rec.setIdReclamo(rs.getInt(1));
-//				rec.setNomTitular(rs.getString(2));
-//				rec.setCalle(ca);
-//				rec.setAltura(rs.getInt(4));
-//				rec.setPiso(rs.getString(5));
-//				rec.setDepto(rs.getString(6));
-//				rec.setLetraDir(rs.getString(7));
-//				rec.setBis(rs.getString(8));
-//				rec.setTipoReclamo(tr);
-//				rec.setFechaIngreso(rs.getDate(10));
-//				rec.setIdEstado(rs.getInt(11));
-//				rec.setEstadoAux(rs.getString(14));
+//				
+//				
 //			
 //		} catch (SQLException e) {
 //			e.printStackTrace();

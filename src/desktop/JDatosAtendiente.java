@@ -68,11 +68,19 @@ public class JDatosAtendiente extends JPanel {
 	JCheckBox chckbxMarchaVaco;
 	JCheckBox chckbxPrdidas;
 	Reclamo reclamoActual;
+	ModoFrame modo;
 	public Action getAccion() {
 		return accion;
 	}
 	public void setAccion(Action accion) {
 		this.accion = accion;
+	}
+	public ModoFrame getModo(){
+		return modo;
+	}
+	public void setModo(ModoFrame m)
+	{
+		this.modo = m;
 	}
 	/**
 	 * Create the panel.
@@ -711,6 +719,8 @@ public class JDatosAtendiente extends JPanel {
 	{
 		if(validar())
 		{
+			this.modo = ModoFrame.ALTA;
+			
 			try
 			{
 			Inspeccion in = new Inspeccion();
@@ -764,6 +774,10 @@ public class JDatosAtendiente extends JPanel {
 	private void guardarCambios(Inspeccion in) throws Exception
 	{
 		InspeccionLogic il = new InspeccionLogic();
+		if(this.modo == ModoFrame.ALTA)
+		{
+			in.estado = State.NUEVO;
+		}
 		il.guardaCambios(in);
 	}
 }
