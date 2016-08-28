@@ -13,7 +13,7 @@ public class MarcaData
 	public ArrayList<Marca> devolverMarcas() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<Marca> marcas = new ArrayList<Marca>();
@@ -68,7 +68,7 @@ public class MarcaData
 	
 	public Marca buscar(Marca ma) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -106,7 +106,7 @@ public class MarcaData
 
 	public void actualizar(Marca ma) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		
 		try
@@ -127,7 +127,7 @@ public class MarcaData
 	}
 	public void eliminar(Marca ma)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try
 		{

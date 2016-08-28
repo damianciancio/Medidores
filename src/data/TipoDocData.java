@@ -13,7 +13,7 @@ public class TipoDocData
 	public ArrayList<TipoDoc> devolverTiposDoc() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<TipoDoc> tipod = new ArrayList<TipoDoc>();
@@ -68,7 +68,7 @@ public class TipoDocData
 	
 	public TipoDoc buscar(TipoDoc td) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -106,7 +106,7 @@ public class TipoDocData
 
 	public void actualizar(TipoDoc td) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		
 		try
@@ -127,7 +127,7 @@ public class TipoDocData
 	}
 	public void eliminar(TipoDoc td)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try
 		{

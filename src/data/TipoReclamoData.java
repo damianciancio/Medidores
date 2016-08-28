@@ -15,7 +15,7 @@ public class TipoReclamoData
 	public ArrayList<TipoReclamo> devolverTiposReclamo() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<TipoReclamo> tipos = new ArrayList<TipoReclamo>();
@@ -72,7 +72,7 @@ public class TipoReclamoData
 	
 	public TipoReclamo buscar(TipoReclamo tr) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -110,7 +110,7 @@ public class TipoReclamoData
 
 	public void actualizar(TipoReclamo tr) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		
 		try
@@ -131,7 +131,7 @@ public class TipoReclamoData
 	}
 	public void eliminar(TipoReclamo tr)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		PreparedStatement cmd = null;
 		String deleteString = "delete from tiporeclamo  where idtiporeclamo = ?";
 		try

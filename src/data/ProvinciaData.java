@@ -13,7 +13,7 @@ public class ProvinciaData
 	public ArrayList<Provincia> devolverProvincias() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<Provincia> provincias = new ArrayList<Provincia>();
@@ -70,7 +70,7 @@ public class ProvinciaData
 	
 	public Provincia buscar(Provincia pro) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;

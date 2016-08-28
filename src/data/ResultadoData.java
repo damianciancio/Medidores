@@ -13,7 +13,7 @@ public class ResultadoData
 	public ArrayList<Resultado> devolverResultados() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
@@ -70,7 +70,7 @@ public class ResultadoData
 	
 	public Resultado buscar(Resultado re) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -108,7 +108,7 @@ public class ResultadoData
 
 	public void actualizar(Resultado re) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		
 		try
@@ -129,7 +129,7 @@ public class ResultadoData
 	}
 	public void eliminar(Resultado re)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try
 		{

@@ -13,7 +13,7 @@ public class LocalidadData
 	public ArrayList<Localidad> devolverLocalidades() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<Localidad> localidades = new ArrayList<Localidad>();
@@ -70,7 +70,7 @@ public class LocalidadData
 	
 	public Localidad buscar(Localidad loc) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -108,7 +108,7 @@ public class LocalidadData
 
 	public void actualizar(Localidad loc) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		
 		try
@@ -130,7 +130,7 @@ public class LocalidadData
 	}
 	public void eliminar(Localidad loc)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try
 		{

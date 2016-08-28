@@ -14,7 +14,7 @@ public class CalleData {
 	public ArrayList<Calle> devolverCalles() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<Calle> calles = new ArrayList<Calle>();
@@ -54,7 +54,7 @@ public class CalleData {
 	public ArrayList<Calle> buscarCoincidencias(String nCalle) throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<Calle> calles = new ArrayList<Calle>();
@@ -131,7 +131,7 @@ public class CalleData {
 	
 	public Calle buscar(Calle ca) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -169,7 +169,7 @@ public class CalleData {
 
 	public void actualizar(Calle ca) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		
 		try
@@ -190,7 +190,7 @@ public class CalleData {
 	}
 	public void eliminar(Calle ca)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try
 		{

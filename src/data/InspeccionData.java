@@ -17,7 +17,7 @@ public class InspeccionData {
 		public void agregarInspeccion(Inspeccion ins) throws SQLException, Exception
 		{
 		try {
-			Connection con = Conexion.obtenerConexion("medidores");
+			Connection con = Conexion.obtenerConexion();
 			PreparedStatement cmd = null;
 			String stringInsert = "insert into inspecciones "+
 		    "( nroReclamo, nroMedidor, fechaInspeccion, tipoDoc, nroDoc, "
@@ -92,7 +92,7 @@ public class InspeccionData {
 
 	public Inspeccion buscar(Inspeccion ins) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;

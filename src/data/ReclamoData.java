@@ -17,7 +17,7 @@ public class ReclamoData
 	public void agregarReclamo(Reclamo rec)
 	{
 		try {
-			Connection con = Conexion.obtenerConexion("medidores");
+			Connection con = Conexion.obtenerConexion();
 			PreparedStatement cmd = null;
 			String stringInsert = "insert into reclamos "+
 		    "(nomTitular, codCalle, altura, piso, depto, "+
@@ -54,14 +54,6 @@ public class ReclamoData
 		    cmd.setInt(8, rec.getTipoReclamo().getIdTipoReclamo());
 		    cmd.setDate(9, rec.getFechaIngreso());
 		    cmd.setInt(10, rec.getIdEstado());
-		    
-		    
-		    
-		    
-		    
-		    
-		    
-		    
 		    cmd.executeUpdate();
 		    
 		
@@ -77,7 +69,7 @@ public class ReclamoData
 
 	public Reclamo buscar(Reclamo re) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -118,7 +110,7 @@ public class ReclamoData
 	public ArrayList<Reclamo> devolverReclamos()
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -205,7 +197,7 @@ public class ReclamoData
 
 	public void actualizar(Reclamo rec) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 			PreparedStatement cmd = null;
 		
 		try
@@ -255,7 +247,7 @@ public class ReclamoData
 	}
 	public void eliminar(Reclamo re)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try
 		{

@@ -13,7 +13,7 @@ public class TipoIvaData
 	public ArrayList<TipoIva> devolverTiposIva() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<TipoIva> tiposiva = new ArrayList<TipoIva>();
@@ -70,7 +70,7 @@ public class TipoIvaData
 	
 	public TipoIva buscar(TipoIva ti) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -108,7 +108,7 @@ public class TipoIvaData
 
 	public void actualizar(TipoIva ti) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		
 		try
@@ -129,7 +129,7 @@ public class TipoIvaData
 	}
 	public void eliminar(TipoIva ti)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try
 		{

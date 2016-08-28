@@ -13,7 +13,7 @@ public class UsuarioData {
 	public ArrayList<Usuario> devolverUsuarios() throws Exception
 	{
 	
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		ResultSet rs = null;
 		Statement cmd = null;
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
@@ -74,7 +74,7 @@ public class UsuarioData {
 	
 	public Usuario buscar(Usuario usr) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
 		Statement cmd = null;
@@ -113,7 +113,7 @@ public class UsuarioData {
 
 	public void actualizar(Usuario usr) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		
 		try
@@ -142,7 +142,7 @@ public class UsuarioData {
 	}
 	public void agregarUsuario(Usuario usr)throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try 
 		{
@@ -175,7 +175,7 @@ public class UsuarioData {
 	
 	public void eliminar(Usuario usr) throws Exception
 	{
-		Connection con = Conexion.obtenerConexion("medidores");
+		Connection con = Conexion.obtenerConexion();
 		Statement cmd = null;
 		try
 		{
