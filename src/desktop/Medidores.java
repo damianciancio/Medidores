@@ -2,6 +2,7 @@ package desktop;
 import java.awt.EventQueue;
 
 import business.logic.*;
+import net.sf.jasperreports.engine.JRException;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -156,6 +157,26 @@ public class Medidores {
 			}
 		});
 		mnUsuario.add(mntmCerrarSesion);
+		
+		JMenu mnReportes = new JMenu("Reportes");
+		menuBar.add(mnReportes);
+		
+		JMenu mnReclamos = new JMenu("Reclamos");
+		mnReportes.add(mnReclamos);
+		
+		JMenuItem mntmTodos = new JMenuItem("Todos");
+		mntmTodos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ReporteReclamos rr = new ReporteReclamos();
+				try {
+					rr.reportearTodos();
+					JOptionPane.showMessageDialog(frmProgramaMedidores, "PDF generado en la carpeta del programa");
+				} catch (JRException e) {
+					JOptionPane.showMessageDialog(frmProgramaMedidores, e.getMessage());
+				}
+			}
+		});
+		mnReclamos.add(mntmTodos);
 	}
 	
 	public void configuracionVentana()
