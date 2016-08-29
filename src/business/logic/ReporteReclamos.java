@@ -11,9 +11,9 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 public class ReporteReclamos {
-	public void reportearTodos() throws JRException
+	public void reportearTodos() throws JRException, Exception
 	{
-		JasperReport reporte = (JasperReport) JRLoader.loadObject("GetAllReclamos.jasper");
+		JasperReport reporte = (JasperReport) JRLoader.loadObject("D:/Software/WORKSPACE JAVA CON GIT/Medidores/GetAllReclamos.jasper");
 		JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, Conexion.obtenerConexion());
 		JRExporter exporter = new JRPdfExporter();
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 

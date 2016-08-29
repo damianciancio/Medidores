@@ -174,6 +174,10 @@ public class Medidores {
 				} catch (JRException e) {
 					JOptionPane.showMessageDialog(frmProgramaMedidores, e.getMessage());
 				}
+				catch(Exception ex)
+				{
+					JOptionPane.showMessageDialog(frmProgramaMedidores, ex.getMessage());
+				}
 			}
 		});
 		mnReclamos.add(mntmTodos);
