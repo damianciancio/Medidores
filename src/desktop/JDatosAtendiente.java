@@ -58,6 +58,7 @@ public class JDatosAtendiente extends JPanel {
 	private JTextField txtErrorGral;
 	private JTextField txtEstadoAntes;
 	private JTextField txtEstadoDespues;
+	private String cadenaError;
 	JTextPane txtPaneObser;
 	JComboBox<Marca> cmbMarca;
 	JComboBox<TipoDoc> cmbTipoDoc;
@@ -195,13 +196,13 @@ public class JDatosAtendiente extends JPanel {
 		});
 		txtErrorGral.setColumns(10);
 		
-		chckbxMarchaVaco = new JCheckBox("Marcha Vacío");
+		chckbxMarchaVaco = new JCheckBox("Marcha VacÃ­o");
 		
-		chckbxPrdidas = new JCheckBox("Pérdidas");
+		chckbxPrdidas = new JCheckBox("PÃ©rdidas");
 		
 		JLabel lblEstadoContadorAntes = new JLabel("Estado Contador Antes");
 		
-		JLabel lblEstadoContadorDespus = new JLabel("Estado Contador Después");
+		JLabel lblEstadoContadorDespus = new JLabel("Estado Contador DespuÃ©s");
 		
 		txtEstadoAntes = new JTextField();
 		txtEstadoAntes.setColumns(10);
@@ -211,7 +212,7 @@ public class JDatosAtendiente extends JPanel {
 		
 		JLabel lblEstadoGeneral = new JLabel("Estado General");
 		
-		JLabel lblEstadoConexin = new JLabel("Estado Conexión");
+		JLabel lblEstadoConexin = new JLabel("Estado ConexiÃ³n");
 		
 		cmbEstadoGral = new JComboBox();
 		
@@ -440,7 +441,7 @@ public class JDatosAtendiente extends JPanel {
 		TipoDocLogic tdl = new TipoDocLogic();
 		ArrayList<String> tipos = new ArrayList<String>();
 		tipos.add("MONOFASICO");
-		tipos.add("TRIFÁSICO");
+		tipos.add("TRIFÃ�SICO");
 		ArrayList<String> estados = new ArrayList<String>();
 		estados.add("BUENO");
 		estados.add("MALO");
@@ -463,7 +464,7 @@ public class JDatosAtendiente extends JPanel {
 	private boolean validar()
 	{
 		boolean valido = true;
-		String cadenaError = "";
+		cadenaError = "";
 		if(txtatendientenomap.getText().equals(""))
 		{
 			valido = false;
@@ -559,7 +560,8 @@ public class JDatosAtendiente extends JPanel {
 		}
 		if(txtError1.getText().equals("") ||txtError2.getText().equals("")||txtError3.getText().equals("") || txtErrorGral.getText().equals(""))
 		{
-			JOptionPane.showMessageDialog(this, "El error debe ser numérico");
+			valido = false;
+			cadenaError = cadenaError + "Rellene los campos de error\n";
 		}
 		else 
 			try
@@ -576,7 +578,8 @@ public class JDatosAtendiente extends JPanel {
 			}
 		if(txtLectura1.getText().equals("") ||txtLectura2.getText().equals("")||txtLectura3.getText().equals(""))
 		{
-			JOptionPane.showMessageDialog(this, "Las lecturas deben ser numéricas");
+			valido = false;
+			cadenaError = cadenaError + "Complete lecturas\n";
 		}
 		else 
 			try
@@ -592,7 +595,8 @@ public class JDatosAtendiente extends JPanel {
 			}
 		if(txtEstadoAntes.getText().equals("") ||txtEstadoDespues.getText().equals(""))
 		{
-			JOptionPane.showMessageDialog(this, "Ingrese estado contador");
+			valido = false;
+			cadenaError = cadenaError + "Ingrese estado contador\n";
 		}
 		else 
 			try
@@ -605,10 +609,7 @@ public class JDatosAtendiente extends JPanel {
 				valido = false;
 				cadenaError = cadenaError + "El estado contador debe ser solo numeros\n";
 			}
-		if(!valido)
-		{
-			JOptionPane.showMessageDialog(this, cadenaError);
-		}
+		
 		return valido;
 	}
 	
@@ -723,14 +724,18 @@ public class JDatosAtendiente extends JPanel {
 			
 			try
 			{
-			Inspeccion in = new Inspeccion();
-			in = mapearADatos();
-			this.guardarCambios(in);
+				Inspeccion in = new Inspeccion();
+				in = mapearADatos();
+				this.guardarCambios(in);
 			}
 			catch(Exception e)
 			{
 				JOptionPane.showMessageDialog(this, e.getMessage());
 			}
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(this, cadenaError);
 		}
 	}
 	

@@ -281,6 +281,10 @@ public class Medidores {
 				{
 					agregarVentana(new JInspeccion(re.getResultado()));
 				}
+				else
+				{
+					agregarVentana(new Jreclamos());
+				}
 			}
 		});;
 		

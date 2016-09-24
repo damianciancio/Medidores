@@ -323,7 +323,12 @@ public class Jreclamos extends JInternalFrame {
 	public void setearTablaReclamos()
 	{
 		ArrayList<Reclamo> rec;
-		DefaultTableModel modelo = new DefaultTableModel();
+		DefaultTableModel modelo = (new DefaultTableModel(){
+			public boolean isCellEditable(int rowIndex,int columnIndex)
+			{
+				return false;
+			}
+		});
 		modelo.addColumn("ID");
 		modelo.addColumn("Nombre titular");
 		modelo.addColumn("Calle");
