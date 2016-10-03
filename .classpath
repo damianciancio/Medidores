@@ -11,5 +11,7 @@
 	<classpathentry kind="lib" path="lib/JasperReports 6.0.3/itextpdf-5.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/JasperReports 6.0.3/jasperreports-6.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/JasperReports 6.0.3/mysql-connector-java-5.1.39-bin.jar"/>
+	<classpathentry kind="lib" path="lib/JasperReports 6.0.3/jaxp-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jdt-compiler-3.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

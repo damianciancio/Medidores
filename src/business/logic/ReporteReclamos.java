@@ -1,4 +1,5 @@
 package business.logic;
+import business.entities.*;
 
 import java.io.File;
 import java.sql.Connection;
@@ -26,13 +27,24 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class ReporteReclamos {
 	public void reportearTodos() throws JRException, Exception
 	{
+		makeReport("D:\\Software\\WORKSPACE JAVA CON GIT\\Medidores\\GetAllReclamos.jrxml",new HashMap<String,Object>(),"C:/jasperoutput/Listado completo.pdf");
+	}
+	
+	public void reportInspeccion(Inspeccion ins) throws Exception
+	{
+		HashMap<String, Object> parameters = new HashMap<String,Object>();
+		parameters.put("id", ins.getNroReclamo());
+		makeReport("D:\\Software\\WORKSPACE JAVA CON GIT\\Medidores\\PlanillaAntesInspeccion.jrxml", parameters, "C:/jasperoutput/"+ins.getNroReclamo()+".pdf");
+	}
+	
+	public void makeReport(String reportSrcFile, HashMap<String,Object> parameters, String srcOutput) throws Exception
+	{
 		try {
 			
-			String reportSrcFile = "D:\\Software\\WORKSPACE JAVA CON GIT\\Medidores\\GetAllReclamos.jrxml";
+			
 			JasperReport reporte = JasperCompileManager.compileReport(reportSrcFile);
 			Conexion con = new Conexion();
 			Connection conn = con.obtenerConexion();
-			Map<String,Object> parameters = new HashMap<String,Object>();
 			File outDir = new File("C:/jasperoutput");
 	        outDir.mkdirs();
 			JasperPrint printer = JasperFillManager.fillReport(reporte, parameters,conn);
@@ -40,15 +52,18 @@ public class ReporteReclamos {
 	        ExporterInput exInput = new SimpleExporterInput(printer);
 	        exporter.setExporterInput(exInput);
 	        OutputStreamExporterOutput exporterOutput = new SimpleOutputStreamExporterOutput(
-	                "C:/jasperoutput/Listado completo.pdf");
+	                srcOutput);
+	        exporter.setExporterOutput(exporterOutput);
 	        SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
 	        exporter.setConfiguration(configuration);
 	        exporter.exportReport();		
 	        } 
 		catch (JRException jre) {
-			throw new Exception ("Error al generar el reporte", jre);
+			jre.printStackTrace();
+			throw new Exception ("Error al generar el reporte. Exception jre", jre);
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			throw new Exception("Error al generar el reporte", e);
 		}
 	}
