@@ -27,14 +27,14 @@ import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 public class ReporteReclamos {
 	public void reportearTodos() throws JRException, Exception
 	{
-		makeReport("D:\\Software\\WORKSPACE JAVA CON GIT\\Medidores\\GetAllReclamos.jrxml",new HashMap<String,Object>(),"C:/jasperoutput/Listado completo.pdf");
+		makeReport("C:\\Medidores\\GetAllReclamos.jrxml",new HashMap<String,Object>(),"C:/Medidores/salidaPDF/Listado completo.pdf");
 	}
 	
 	public void reportInspeccion(Inspeccion ins) throws Exception
 	{
 		HashMap<String, Object> parameters = new HashMap<String,Object>();
 		parameters.put("id", ins.getNroReclamo());
-		makeReport("D:\\Software\\WORKSPACE JAVA CON GIT\\Medidores\\PlanillaAntesInspeccion.jrxml", parameters, "C:/jasperoutput/"+ins.getNroReclamo()+".pdf");
+		makeReport("C:\\Medidores\\PlanillaAntesInspeccion.jrxml", parameters, "C:/Medidores/salidaPDF/"+ins.getNroReclamo()+".pdf");
 	}
 	
 	public void makeReport(String reportSrcFile, HashMap<String,Object> parameters, String srcOutput) throws Exception
@@ -45,7 +45,7 @@ public class ReporteReclamos {
 			JasperReport reporte = JasperCompileManager.compileReport(reportSrcFile);
 			Conexion con = new Conexion();
 			Connection conn = con.obtenerConexion();
-			File outDir = new File("C:/jasperoutput");
+			File outDir = new File("C:/Medidores/salidaPDF");
 	        outDir.mkdirs();
 			JasperPrint printer = JasperFillManager.fillReport(reporte, parameters,conn);
 	        JRPdfExporter exporter = new JRPdfExporter();
