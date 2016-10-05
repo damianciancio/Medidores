@@ -253,8 +253,8 @@ public class ReclamoData
 		{
 			
 			cmd = con.createStatement();
-			cmd.executeQuery("delete from reclamos "+
-								"where idreclamo = " + re.getIdReclamo() );		
+			cmd.executeUpdate("delete from reclamos "+
+								"where idreclamo = " + re.getIdReclamo());		
 		}
 		catch(Exception e)
 		{

@@ -52,6 +52,8 @@ public class Jreclamos extends JInternalFrame {
 	public ModoFrame modo;	
 	private JComboBox<TipoReclamo> cmbTipoReclamo;
 	private Reclamo resultado;
+	private Reclamo actual;
+	JButton btnAceptar;
 	
 	public Reclamo getResultado() {
 		return resultado;
@@ -124,7 +126,7 @@ public class Jreclamos extends JInternalFrame {
 		
 		JLabel lblNro = new JLabel("NRO");
 		
-		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				guardarCambios();
@@ -302,6 +304,11 @@ public class Jreclamos extends JInternalFrame {
 			menuBar.add(btnEditar);
 			
 			JButton btnEliminar = new JButton("Eliminar");
+			btnEliminar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					eliminar();
+				}
+			});
 			menuBar.add(btnEliminar);
 		} catch (Exception e1) 
 		{
@@ -390,6 +397,21 @@ public class Jreclamos extends JInternalFrame {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
 			
+		}
+	}
+	
+	public void eliminar()
+	{
+		try {
+			Reclamo r = this.mapearDesdeTabla();
+			this.setModo(ModoFrame.BAJA);
+			this.mapearACampos(r);
+			this.btnAceptar.setText("Eliminar");
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -575,6 +597,7 @@ public class Jreclamos extends JInternalFrame {
 		{
 			this.limpiarCampos();
 			this.setModo(ModoFrame.ALTA);
+			this.btnAceptar.setText("Guardar");
 		} 
 		catch (Exception e) 
 		{
@@ -587,6 +610,7 @@ public class Jreclamos extends JInternalFrame {
 		{
 			this.mapearACampos(this.mapearDesdeTabla());
 			this.setModo(ModoFrame.MODIFICACION);
+			this.btnAceptar.setText("Guardar Cambios");
 		}
 		catch (Exception e)
 		{
