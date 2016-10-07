@@ -198,12 +198,14 @@ public class ReclamoData
 	public void actualizar(Reclamo rec) throws Exception
 	{
 		Connection con = Conexion.obtenerConexion();
+		
 			PreparedStatement cmd = null;
 		
 		try
 		{
-			String stringInsert = "update reclamos (nomTitular, codCalle, "+
-		    "altura, piso, depto, letraDir, bis, idtiporeclamo, fechaIngreso, idEstado)values (?,?,?,?,?,?,?,?,?,?)"
+			String stringInsert = "update reclamos set nomTitular = ? , codCalle = ? , "+
+		    "altura = ? , piso = ?, depto = ? , letraDir = ? , bis = ?, idtiporeclamo = ?, "
+		    + "fechaIngreso = ?, idEstado = ? "
 		    + "where idReclamo = ?";
 			cmd = con.prepareStatement(stringInsert);
 		    cmd.setString(1, rec.getNomTitular());
@@ -234,6 +236,7 @@ public class ReclamoData
 		    cmd.setDate(9, rec.getFechaIngreso());
 		    cmd.setInt(10, rec.getIdEstado());
 		    cmd.setInt(11, rec.getIdReclamo());
+		    cmd.executeUpdate();
 		}
 		catch (Exception e)
 		{

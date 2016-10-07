@@ -1,215 +1,224 @@
 package desktop;
 
-
-import javax.swing.JInternalFrame;
-import javax.swing.JSplitPane;
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JScrollPane;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JInternalFrame;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
 
-import business.entities.Calle;
 import business.entities.Usuario;
-import business.logic.CalleLogic;
-import business.logic.UsuarioLogic;
-import util.ModoFrame;
+import business.logic.*;
 import util.State;
 
-import javax.swing.JTable;
-import javax.swing.BoxLayout;
-import javax.swing.JToolBar;
+import com.jgoodies.forms.layout.FormSpecs;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+import javax.swing.JCheckBox;
 
 public class JUsuarios extends JInternalFrame {
-	public ModoFrame modo;
 	private JTextField txtID;
-	private JTextField txtNombreUsuario;
-	private JTable table;
-	private JPasswordField txtContrasena;
-	private JPasswordField txtConfirmar;
-
-	/**
-	 * Launch the application.
-	**/ 
-
-
-/**
-	 * Create the frame.
-	 */
-	public JUsuarios() {
+	private JTextField txtUsuario;
+	private Usuario newUser;
+	private Usuario oldUser;
+	private String errorString;
+	private JPasswordField txtOldPass;
+	private JPasswordField txtNewPass;
+	private JPasswordField txtConfirmNewPass;
+	private JCheckBox chckbxHabilitado;
+	
+	public JUsuarios(Usuario usr) {
 		
-		this.modo = ModoFrame.ALTA;
-		setBounds(100, 100, 707, 528);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, BorderLayout.EAST);
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,}));
 		
-		table = new JTable();
-		scrollPane.setViewportView(table);
+		JLabel lblDatosUsuario = new JLabel("Datos Usuario");
+		getContentPane().add(lblDatosUsuario, "6, 4");
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.WEST);
+		JLabel lblId = new JLabel("ID");
+		getContentPane().add(lblId, "4, 8, right, default");
 		
 		txtID = new JTextField();
 		txtID.setEnabled(false);
+		getContentPane().add(txtID, "6, 8, fill, default");
 		txtID.setColumns(10);
 		
-		JLabel lblContrasena = new JLabel("Contrase\u00F1a");
+		JLabel lblUsuario = new JLabel("Usuario");
+		getContentPane().add(lblUsuario, "4, 10, right, default");
 		
-		JLabel lblNombreUsuario = new JLabel("Nombre Usuario");
+		txtUsuario = new JTextField();
+		getContentPane().add(txtUsuario, "6, 10, fill, default");
+		txtUsuario.setColumns(10);
 		
-		JLabel lblUsuarios = new JLabel("Usuarios");
+		JLabel lblContraseaAntigua = new JLabel("Contrase\u00F1a antigua");
+		getContentPane().add(lblContraseaAntigua, "4, 12, right, default");
 		
-		txtNombreUsuario = new JTextField();
-		txtNombreUsuario.setColumns(10);
+		txtOldPass = new JPasswordField();
+		getContentPane().add(txtOldPass, "6, 12, fill, default");
 		
-		txtContrasena = new JPasswordField();
+		JLabel lblNuevaContrasea = new JLabel("Nueva Contrase\u00F1a");
+		getContentPane().add(lblNuevaContrasea, "4, 14, right, default");
 		
-		txtConfirmar = new JPasswordField();
+		txtNewPass = new JPasswordField();
+		getContentPane().add(txtNewPass, "6, 14, fill, default");
 		
-		JLabel lblConfirmeContrasena = new JLabel("Confirme Contrase\u00F1a");
+		JLabel lblConfirmarNuevaContrasea = new JLabel("Confirmar Nueva Contrase\u00F1a");
+		getContentPane().add(lblConfirmarNuevaContrasea, "4, 16, right, default");
 		
-		JButton btnGuardar = new JButton("Guardar");
-		btnGuardar.addActionListener(new ActionListener() {
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				agregarUsuario();
+				guardarCambios();
 			}
 		});
 		
-		JButton btnLimpiarCampos = new JButton("Limpiar Campos");
-		btnLimpiarCampos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				limpiarCampos();
-			}
-		});
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(txtID, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblUsuarios, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-								.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-									.addComponent(lblContrasena)
-									.addComponent(lblNombreUsuario)
-									.addComponent(lblConfirmeContrasena)
-									.addComponent(btnGuardar)))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(txtNombreUsuario, GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-									.addComponent(txtContrasena)
-									.addComponent(txtConfirmar))
-								.addComponent(btnLimpiarCampos))))
-					.addContainerGap())
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(5)
-					.addComponent(lblUsuarios)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(txtID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(4)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNombreUsuario)
-						.addComponent(txtNombreUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtContrasena, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblContrasena))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtConfirmar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblConfirmeContrasena))
-					.addPreferredGap(ComponentPlacement.RELATED, 315, Short.MAX_VALUE)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnLimpiarCampos)
-						.addComponent(btnGuardar))
-					.addContainerGap())
-		);
-		panel.setLayout(gl_panel);
+		txtConfirmNewPass = new JPasswordField();
+		getContentPane().add(txtConfirmNewPass, "6, 16, fill, top");
 		
-		JToolBar toolBar = new JToolBar();
-		getContentPane().add(toolBar, BorderLayout.NORTH);
+		chckbxHabilitado = new JCheckBox("Habilitado");
+		getContentPane().add(chckbxHabilitado, "6, 18");
+		getContentPane().add(btnAceptar, "8, 20");
 		
-		JButton btnEditar = new JButton("Editar");
-		toolBar.add(btnEditar);
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//limpiarCampos();
-			}
-		});
-		
-		JButton btnBorrar = new JButton("Borrar");
-		toolBar.add(btnBorrar);
-		
+		JButton btnCancelar = new JButton("Cancelar");
+		getContentPane().add(btnCancelar, "10, 20");
 
+		inicializar(usr);
 	}
 	
-	public void agregarUsuario()
+	public void inicializar(Usuario usr)
 	{
-		Usuario usr = new Usuario(State.NUEVO);
+		this.oldUser = usr;
+		this.newUser = new Usuario();
+		mapearDeDatos(oldUser);
+		this.chckbxHabilitado.setSelected(true);
+		this.chckbxHabilitado.setEnabled(false);
+	}
+	
+	public void guardarCambios()
+	{
 		if(validar())
 		{
-			mapearADatos(usr);
-			guardar(usr);
+			UsuarioLogic ul = new UsuarioLogic();
+			newUser = mapearADatos();
+			newUser.estado = State.ACTUALIZAR;
+			try {
+				ul.guardaCambios(newUser);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(this, e.getMessage());
+			}
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Datos invï¿½lidos", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, errorString);
 		}
 	}
 	
-	public void mapearADatos(Usuario usr)
-	{
-		usr.setUserNombre(txtNombreUsuario.getText());
-		usr.setPass(txtContrasena.getPassword().toString());
-		
-	}
 	public boolean validar()
 	{
+		errorString = "";
 		boolean valido = true;
-		if(txtNombreUsuario.getText().equals("")||txtContrasena.getPassword().toString().length()<8/*||!txtContrasena.getPassword().toString().equals(txtConfirmar.getPassword().toString())*/)
+		if(txtUsuario.getText().length()<8)
 		{
+			errorString = errorString + "El usuario debe tener mas de 8 caracteres.\n";
 			valido = false;
+		}
+		
+		String old = new String(txtOldPass.getPassword()); 
+		String newP = new String(txtNewPass.getPassword());
+		String newConP = new String(txtConfirmNewPass.getPassword());
+		
+		System.out.println(old + " " + newP + " " + " " + newConP);
+		
+		if(old.length()<8 || newP.length()<8 || newConP.length()<8)
+		{
+			errorString = errorString + "La contraseña debe tener mas de 8 caracteres.\n";
+			valido = false;
+		}
+		if(!newP.equals(newConP))
+		{
+			errorString = errorString + "Las contraseñas no coinciden.\n";
+			valido = false;
+		}
+		if(valido)
+		{
+			UsuarioLogic ul = new UsuarioLogic();
+			try
+			{
+				Usuario tempUser = ul.buscarUsuario(oldUser);
+				if(tempUser== null)
+				{
+					errorString = errorString + "Usuario inexistente\n";
+					valido = false;
+				}
+				else
+					if(tempUser.getPass().equals(new String(txtNewPass.getPassword())))
+					{
+						errorString = errorString + "Contraseña antigua incorrecta.\n";
+						valido = false;
+					}
+			}
+			catch(Exception e)
+			{
+				errorString = errorString + e.getMessage();
+			}
 		}
 		return valido;
 	}
-	public void guardar(Usuario usr)
+	
+	public Usuario mapearADatos()
 	{
-		UsuarioLogic ul = new UsuarioLogic();
-		try
-		{
-			ul.guardaCambios(usr);
-		}
-		catch(Exception e)
-		{
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		}
+		Usuario usuarioEnCuestion = new Usuario();
+		usuarioEnCuestion.setIdUsuario(Integer.parseInt(txtID.getText()));
+		usuarioEnCuestion.setUserNombre(txtUsuario.getText());
+		usuarioEnCuestion.setPass(new String(txtNewPass.getPassword()));
+		usuarioEnCuestion.setHabilitado(this.chckbxHabilitado.isSelected());
+		return usuarioEnCuestion;
 	}
-	public void limpiarCampos()
+	
+	public void mapearDeDatos(Usuario usuarioEnCuestion)
 	{
-		txtConfirmar.setText("");
-		txtContrasena.setText("");
-		txtID.setText("");
-		txtNombreUsuario.setText("");
+		txtID.setText(String.valueOf(usuarioEnCuestion.getIdUsuario()));
+		txtUsuario.setText(usuarioEnCuestion.getUserNombre());
+		chckbxHabilitado.setSelected(usuarioEnCuestion.isHabilitado());
 	}
+
 }

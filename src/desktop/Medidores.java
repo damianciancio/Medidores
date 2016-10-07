@@ -139,14 +139,6 @@ public class Medidores {
 		JMenuItem mntmInspecciones = new JMenuItem("Inspecciones");
 		mnAbm.add(mntmInspecciones);
 		
-		JMenuItem mntmUsuarios = new JMenuItem("Usuarios");
-		mntmUsuarios.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				agregarVentana(new JUsuarios());
-			}
-		});
-		mnAbm.add(mntmUsuarios);
-		
 		JMenu mnUsuario = new JMenu("Usuario");
 		menuBar.add(mnUsuario);
 		
@@ -156,6 +148,14 @@ public class Medidores {
 				cerrarSesion();
 			}
 		});
+		
+		JMenuItem mntmActualizarDatos = new JMenuItem("Actualizar datos");
+		mntmActualizarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				agregarVentana(new JUsuarios(usrActual));
+			}
+		});
+		mnUsuario.add(mntmActualizarDatos);
 		mnUsuario.add(mntmCerrarSesion);
 		
 		JMenu mnReportes = new JMenu("Reportes");
@@ -167,8 +167,9 @@ public class Medidores {
 		JMenuItem mntmTodos = new JMenuItem("Todos");
 		mntmTodos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ReporteReclamos rr = new ReporteReclamos();
 				try {
+					ReporteReclamos rr = new ReporteReclamos();
+				
 					rr.reportearTodos();
 					JOptionPane.showMessageDialog(frmProgramaMedidores, "PDF generado en la carpeta del programa");
 				} catch (JRException e) {

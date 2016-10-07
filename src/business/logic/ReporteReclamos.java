@@ -2,9 +2,12 @@ package business.logic;
 import business.entities.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import data.Conexion;
 import net.sf.jasperreports.engine.JRException;
@@ -25,16 +28,64 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
 public class ReporteReclamos {
+	
+	
+	static String pathTodosLosReclamos;
+	static String pathReclamoAntesInspeccion;
+	static String pathReclamoDespuesInspeccion;
+	static String outPut;
+	
+	
+	public ReporteReclamos() throws Exception
+	{
+		levantarDirecciones();
+	}
+	
+	
+	public static String getOutPutFileSource()
+	{
+		return outPut;
+	}
+	
 	public void reportearTodos() throws JRException, Exception
 	{
-		makeReport("C:\\Medidores\\GetAllReclamos.jrxml",new HashMap<String,Object>(),"C:/Medidores/salidaPDF/Listado completo.pdf");
+		makeReport(pathTodosLosReclamos,new HashMap<String,Object>(),outPut+"Listado completo.pdf");
+	}
+	
+	
+	public void levantarDirecciones() throws Exception
+	{
+		Properties propiedades = new Properties();
+	    InputStream entrada = null;
+		try
+		{
+		    entrada = new FileInputStream("configuracion.properties");
+		    propiedades.load(entrada);
+		    
+		    pathTodosLosReclamos = propiedades.getProperty("todosLosReclamos");
+		    pathReclamoAntesInspeccion = propiedades.getProperty("reclamoAntesInspeccion");
+		    pathReclamoDespuesInspeccion = propiedades.getProperty("reclamoDespuesInspeccion");
+		    outPut = propiedades.getProperty("output");
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
 	}
 	
 	public void reportInspeccion(Inspeccion ins) throws Exception
 	{
 		HashMap<String, Object> parameters = new HashMap<String,Object>();
 		parameters.put("id", ins.getNroReclamo());
-		makeReport("C:\\Medidores\\PlanillaAntesInspeccion.jrxml", parameters, "C:/Medidores/salidaPDF/"+ins.getNroReclamo()+".pdf");
+		makeReport(pathReclamoDespuesInspeccion, parameters, outPut+ins.getNroReclamo()+".pdf");
+	}
+	
+	public void reportReclamo(Reclamo rec) throws Exception
+	{
+		HashMap<String, Object> parameters = new HashMap<String,Object>();
+		parameters.put("id", rec.getIdReclamo());
+		makeReport(pathReclamoAntesInspeccion, parameters, outPut+rec.getIdReclamo()+".pdf");
+		
 	}
 	
 	public void makeReport(String reportSrcFile, HashMap<String,Object> parameters, String srcOutput) throws Exception
@@ -45,7 +96,7 @@ public class ReporteReclamos {
 			JasperReport reporte = JasperCompileManager.compileReport(reportSrcFile);
 			Conexion con = new Conexion();
 			Connection conn = con.obtenerConexion();
-			File outDir = new File("C:/Medidores/salidaPDF");
+			File outDir = new File(outPut);
 	        outDir.mkdirs();
 			JasperPrint printer = JasperFillManager.fillReport(reporte, parameters,conn);
 	        JRPdfExporter exporter = new JRPdfExporter();

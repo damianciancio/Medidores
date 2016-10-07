@@ -1,5 +1,7 @@
 package business.logic;
 import util.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import data.UsuarioData;
@@ -9,20 +11,20 @@ public class UsuarioLogic
 {
 	
 	
-	public Usuario buscarUsuario(Usuario user) throws Exception
+	public Usuario buscarUsuario(Usuario user) throws DataBaseException
 	{
 		try
 		{
 			UsuarioData ud = new UsuarioData();
 			return ud.buscar(user);
 		}
-		catch (Exception e)
+		catch (DataBaseException e)
 		{
 			throw e;
 		}
 	}
 	
-	public List<Usuario> devolverUsuarios() throws Exception
+	public ArrayList<Usuario> devolverUsuarios() throws Exception
 	{
 		try
 		{

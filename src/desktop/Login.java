@@ -6,8 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.logging.log4j.*;
+
 import business.entities.Usuario;
 import business.logic.*;
+import util.*;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -145,19 +148,19 @@ public class Login extends JFrame {
 				us = ut.validarUsuario(usr);
 				if(us !=null && us.isHabilitado())
 				{
-					JOptionPane.showMessageDialog(null, "Sesion Iniciada", "Login", JOptionPane.INFORMATION_MESSAGE);
+					notifyUser("Sesion Iniciada", JOptionPane.INFORMATION_MESSAGE, "Login");
 					this.dispose();
 					ppal.setUsrActual(us);
 					ppal.getFrmProgramaMedidores().setTitle("Programa medidores - Usuario actual: " + ppal.getUsrActual().getUserNombre());
 				} 
 				else 
 				{
-					JOptionPane.showMessageDialog(null, "Datos errï¿½neos", "Login",JOptionPane.ERROR_MESSAGE);
+					notifyUser("Datos erróneos", JOptionPane.ERROR_MESSAGE, "Login");
 				}
 			}
-			catch(Exception e)
+			catch(DataBaseException e)
 			{
-				JOptionPane.showMessageDialog(null,e.getMessage(),"Login",  JOptionPane.ERROR_MESSAGE);
+				notifyUser(e.getMessage(),e,Level.DEBUG, JOptionPane.ERROR_MESSAGE, "Login" );
 			}
 
 	}
@@ -166,5 +169,16 @@ public class Login extends JFrame {
 	{
 		this.dispose();
 		ppal.getFrmProgramaMedidores().dispose();
+	}
+	
+	public void notifyUser(String mensaje, int tipoMensaje, String titulo)
+	{
+		JOptionPane.showMessageDialog(this, mensaje,titulo,tipoMensaje);
+	}
+	
+	public void notifyUser(String mensaje, Exception e, Level l, int tipoMensaje, String titulo)
+	{
+		notifyUser(mensaje, tipoMensaje, titulo);
+		SuperLogger.logger.log(l,mensaje, e);
 	}
 }

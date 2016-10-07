@@ -6,11 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import java.sql.PreparedStatement;
 
 import business.entities.Usuario;
+import util.DataBaseException;
 
 public class UsuarioData {
-	public ArrayList<Usuario> devolverUsuarios() throws Exception
+	public ArrayList<Usuario> devolverUsuarios() throws DataBaseException
 	{
 	
 		Connection con = Conexion.obtenerConexion();
@@ -26,16 +28,17 @@ public class UsuarioData {
 		    rs = cmd.executeQuery("SELECT * FROM usuarios");
 		    while(rs.next())
 			{
-				Usuario usr = new Usuario();
-				this.mapear(rs, usr);
-				usuarios.add(usr);
+				usuarios.add(this.mapear(rs));
 			}
 	
 		    
 		} catch (SQLException e)
 		{
-			System.out.println("Fallo el select para devolver todos los usuarios. "+ e.getStackTrace());
-			throw new Exception("No se pueden encontrar los usuarios. Intente nuevamente. Si este problema persiste, llame a alguien.", e);
+			throw new DataBaseException("No se pueden encontrar los usuarios. Intente nuevamente. Si este problema persiste, llame a alguien.", e);
+		}
+		catch(DataBaseException dbe)
+		{
+			throw dbe;
 		}
 		
 					
@@ -49,51 +52,62 @@ public class UsuarioData {
 		finally
 		{
 			cmd = null;
-			con.close();
+			try {
+				con.close();
+			} catch (SQLException e) {
+				throw new DataBaseException("No se pudo cerrar la conexion.", e);
+			}
 			return usuarios;
 		}
 	}
 	
 	
-	public Usuario mapear(ResultSet rs, Usuario usr)
+	public Usuario mapear(ResultSet rs) throws DataBaseException
 	{
+		Usuario usr = new Usuario();
 		try {
-			if(rs.next()){
-				usr = new Usuario();
+
 				usr.setIdUsuario(rs.getInt(1));
 				usr.setUserNombre(rs.getString(2));
 				usr.setPass(rs.getString(3));
 				usr.setHabilitado(rs.getBoolean(4));
-			}
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataBaseException("Problema con result set",e);
 		}
 		return usr;
 	}
 	
 	
-	public Usuario buscar(Usuario usr) throws Exception
+	public Usuario buscar(Usuario usr) throws DataBaseException
 	{
 		Connection con = Conexion.obtenerConexion();
 		
 		ResultSet rs = null;
-		Statement cmd = null;
+		PreparedStatement cmd = null;
 		Usuario find = null;
 		try {
-	
-		    cmd = con.createStatement();
-	
-		    rs = cmd.executeQuery("SELECT * FROM usuarios " + 
-		    						"where( usuarios.userName = '"+usr.getUserNombre()+"' and usuarios.pass = '"+usr.getPass()+"')");
+			
+		    String query = "SELECT * FROM usuarios " + 
+					"where( usuarios.userName = ? and usuarios.pass = ?)";
+		    cmd = con.prepareStatement(query);
+		    cmd.setString(1,usr.getUserNombre());
+		    cmd.setString(2,usr.getPass());
+		    rs = cmd.executeQuery();
 
 		    
-		    
-			find = this.mapear(rs, find);
-		    
+		    if(rs.next())
+		    	try
+		    {
+		    		find = this.mapear(rs);
+		    }
+		    catch (DataBaseException dbe)
+		    {
+		    	throw dbe;
+		    }
 		} catch (SQLException e)
 		{
-			System.out.println("Fallo buscar Usuario "+ e.getStackTrace());
-			throw new Exception("Fallo al buscar Usuario. De persistir este problema, consulte a alguien.",e);
+			throw new DataBaseException("Fallo al buscar Usuario. De persistir este problema, consulte a alguien.",e);
 		}
 		
 		finally
@@ -102,10 +116,9 @@ public class UsuarioData {
 			{
 				con.close();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				System.out.println("No se cerr� la conexi�n a la base de datos.");
-				throw new Exception("No se cerr� una conexi�n a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
+				throw new DataBaseException("No se cerro una conexion a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
 			}
 		}
 		return find;
@@ -114,18 +127,23 @@ public class UsuarioData {
 	public void actualizar(Usuario usr) throws Exception
 	{
 		Connection con = Conexion.obtenerConexion();
-		Statement cmd = null;
+		PreparedStatement cmd = null;
 		
 		try
 		{
-			cmd = con.createStatement();
-			cmd.executeQuery("update usuarios (userName, pass) values ("+ usr.getUserNombre() +", "+usr.getPass()+")");
+			String query = "update usuarios set userName= ?, pass= ?, habilitado= ? "
+					+ "where idusuarios = ?";
+			cmd = con.prepareStatement(query);
+			cmd.setString(1, usr.getUserNombre());
+			cmd.setString(2, usr.getPass());
+			cmd.setBoolean(3, usr.isHabilitado());
+			cmd.setInt(4, usr.getIdUsuario());
+			cmd.executeUpdate();
 			
 		}
-		catch (Exception e)
+		catch (SQLException e)
 		{
-			System.out.println("No se pudo actualizar usuario "+e.getStackTrace());
-			throw new Exception("Error en la base de datos, intente nuevamente", e);
+			throw new DataBaseException("Error al actualizar usuario "+usr.getUserNombre(), e);
 		}
 		finally
 		{
@@ -133,29 +151,31 @@ public class UsuarioData {
 			{
 				con.close();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				System.out.println("No se cerr� la conexi�n a la base de datos.");
-				throw new Exception("No se cerr� una conexi�n a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
+				throw new DataBaseException("No se cerro una conexion a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
 			}
 		}
 	}
 	public void agregarUsuario(Usuario usr)throws Exception
 	{
 		Connection con = Conexion.obtenerConexion();
-		Statement cmd = null;
+		PreparedStatement cmd = null;
 		try 
 		{
-			
-		    cmd = con.createStatement();
-		    String str = new String("Insert into usuarios (userName, pass) values (" + "\"" +  usr.getUserNombre() +"\" , \"" + usr.getPass()+"\")"); 
-		    cmd.execute(str);
+
+		    String query = new String("Insert into usuarios (userName, pass) "
+		    		+ "values (? , ?)");
+		    cmd = con.prepareStatement(query);
+		    cmd.setString(1, usr.getUserNombre());
+		    cmd.setString(2, usr.getPass());
+		    cmd.execute();
 		    
 		} 
 		catch (SQLException e)
 		{
 			System.out.println("Fallo el insert");
-			throw new Exception("No se pudo agregar usuario a la base de datos. Intente nuevamente. Si el problema persiste llamar a alguien", e);
+			throw new DataBaseException("No se pudo agregar usuario a la base de datos. Intente nuevamente. Si el problema persiste llamar a alguien", e);
 		}
 		finally
 		{
@@ -163,10 +183,9 @@ public class UsuarioData {
 			{
 				con.close();
 			}
-			catch (Exception e)
+			catch (SQLException e)
 			{
-				System.out.println("No se cerr� la conexi�n a la base de datos.");
-				throw new Exception("No se cerr� una conexi�n a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
+				throw new DataBaseException("No se cerro una conexion a la base de datos. De tener problemas de lentitud, guarde todo lo necesario y reinicie la aplicacion",e);
 			}
 			cmd = null;
 		}
@@ -176,13 +195,13 @@ public class UsuarioData {
 	public void eliminar(Usuario usr) throws Exception
 	{
 		Connection con = Conexion.obtenerConexion();
-		Statement cmd = null;
+		PreparedStatement cmd = null;
 		try
 		{
-			
-			cmd = con.createStatement();
-			cmd.executeQuery("delete from usuarios "+
-								"where idusuarios = " + usr.getIdUsuario() );		
+			String query = "delete from usuarios "+
+					"where idusuarios = ?" ;
+			cmd = con.prepareStatement(query);
+			cmd.executeQuery();		
 		}
 		catch(Exception e)
 		{

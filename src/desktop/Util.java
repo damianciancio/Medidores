@@ -14,6 +14,7 @@ import business.entities.Reclamo;
 import business.entities.Usuario;
 import business.logic.ReclamoLogic;
 import business.logic.UsuarioLogic;
+import util.DataBaseException;
 
 public class Util {
 	
@@ -59,14 +60,14 @@ public class Util {
 		}
 	}
 
-	public Usuario validarUsuario(Usuario usr) throws Exception
+	public Usuario validarUsuario(Usuario usr) throws DataBaseException
 	{
 		try
 		{
 			UsuarioLogic ul = new UsuarioLogic();
 			return ul.buscarUsuario(usr);
 		}
-		catch (Exception e)
+		catch (DataBaseException e)
 		{
 			throw e;
 		}

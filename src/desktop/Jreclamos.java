@@ -22,6 +22,7 @@ import business.entities.Calle;
 import business.entities.Reclamo;
 import business.logic.CalleLogic;
 import business.logic.ReclamoLogic;
+import business.logic.ReporteReclamos;
 import business.logic.TipoReclamoLogic;
 import util.ModoFrame;
 import util.State;
@@ -52,7 +53,6 @@ public class Jreclamos extends JInternalFrame {
 	public ModoFrame modo;	
 	private JComboBox<TipoReclamo> cmbTipoReclamo;
 	private Reclamo resultado;
-	private Reclamo actual;
 	JButton btnAceptar;
 	
 	public Reclamo getResultado() {
@@ -310,6 +310,14 @@ public class Jreclamos extends JInternalFrame {
 				}
 			});
 			menuBar.add(btnEliminar);
+			
+			JButton btnImprimirPdf = new JButton("Imprimir PDF");
+			btnImprimirPdf.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					imprimirPDF();
+				}
+			});
+			menuBar.add(btnImprimirPdf);
 		} catch (Exception e1) 
 		{
 			// TODO Auto-generated catch block
@@ -549,6 +557,14 @@ public class Jreclamos extends JInternalFrame {
 		{
 			rec.setDepto(txtdepto.getText());
 		}
+		if(txtLetraDir.getText().equals(""))
+		{
+			rec.setLetraDir(null);
+		}
+		else
+		{
+			rec.setLetraDir(txtLetraDir.getText());
+		}
 		rec.setFechaIngreso(Date.valueOf(txtFechaIngreso.getText()));
 		rec.setTipoReclamo((TipoReclamo)cmbTipoReclamo.getSelectedItem());
 		return rec;
@@ -647,5 +663,17 @@ public class Jreclamos extends JInternalFrame {
 		this.txtPiso.setText("");
 		this.txtNroReclamo.setText("");
 		this.rellenarComboBoxCalles((new CalleLogic()).devolvercalles(), cmbCalles);
+	}
+	
+	public void imprimirPDF()
+	{
+		try 
+		{
+			ReporteReclamos rr = new ReporteReclamos();
+			rr.reportReclamo(this.mapearDesdeTabla());
+			JOptionPane.showMessageDialog(this, "PDF generado correctamente en " + ReporteReclamos.getOutPutFileSource());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Error al generar planilla");
+		}
 	}
 }
