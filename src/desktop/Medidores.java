@@ -137,6 +137,11 @@ public class Medidores {
 		mnAbm.add(mntmReclamos);
 		
 		JMenuItem mntmInspecciones = new JMenuItem("Inspecciones");
+		mntmInspecciones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				agregarVentana(new JListaInspecciones());
+			}
+		});
 		mnAbm.add(mntmInspecciones);
 		
 		JMenu mnUsuario = new JMenu("Usuario");

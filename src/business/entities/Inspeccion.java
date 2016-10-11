@@ -29,8 +29,25 @@ public class Inspeccion extends Entidad{
 	private Lectura[] lecturas;
 	private String observaciones;
 	private String atendiente;
+	private Reclamo reclamo;
+	private String calle;
 	
-	
+	public String getCalle()
+	{
+		return calle;
+	}
+	public void setCalle(String street)
+	{
+		this.calle = street;
+	}
+	public Reclamo getReclamo()
+	{
+		return reclamo;
+	}
+	public void setReclamo(Reclamo re)
+	{
+		this.reclamo = re;
+	}
 	public int getIdInspeccion() {
 		return idInspeccion;
 	}

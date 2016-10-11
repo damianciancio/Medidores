@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import business.entities.Calle;
 import business.entities.Inspeccion;
 import business.entities.Reclamo;
+import business.entities.Resultado;
 import business.entities.TipoReclamo;
 
 public class InspeccionData {
@@ -127,68 +128,88 @@ public class InspeccionData {
 		}
 		return find;
 	}
+
+
+
+
 	
 
 	
-//	public ArrayList<Inspeccion> devolverInspecciones()
-//	{
-//	
-//		Connection con = Conexion.obtenerConexion("medidores");
-//		
-//		ResultSet rs = null;
-//		Statement cmd = null;
-//		ArrayList<Inspeccion>  ins = new ArrayList<Inspeccion>();
-//			
-//	
-//		try {
-//	
-//		    cmd = con.createStatement();
-//	
-//		    rs = cmd.executeQuery("select * FROM INSPECCIONES");
-//		    
-//		} catch (SQLException e)
-//		{
-//			System.out.println("Fallo el select");
-//		}
-//		
-//		try {
-//			while(rs.next())
-//			{
-//				Inspeccion inspec = new Inspeccion();
-//				//inspec = this.mapear(rs);
-//				ins.add(inspec);
-//			}
-//		
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//		}
-//		
-//		
-//		
-//		try 
-//			{
-//			con.close();
-//			}
-//		catch(SQLException e) {
-//			System.out.println("Conexion no cerrada");
-//		}
-//		return ins;
-//	}
-//	
-//	public Inspeccion mapear (ResultSet rs)
-//	{
-//		Inspeccion in = new Inspeccion();
-//		try {
-//				
-//				
-//				
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return rec;
-//	}
-//
+	public ArrayList<Inspeccion> devolverInspecciones()
+	{
+	
+		Connection con = Conexion.obtenerConexion();
+		
+		ResultSet rs = null;
+		Statement cmd = null;
+		ArrayList<Inspeccion>  ins = new ArrayList<Inspeccion>();
+			
+	
+		try {
+	
+		    cmd = con.createStatement();
+	
+		    rs = cmd.executeQuery("select re.idReclamo, callesrosario.callesRosariocol, re.altura,ins.fechaInspeccion, ins.estado, res.descResult, tr.descTipoReclamo, re.nomTitular  "
+		    		+ "from inspecciones ins "
+		    		+ "inner join reclamos re "
+		    		+ "on re.idReclamo = ins.nroReclamo "
+		    		+ "inner join resultados res "
+		    		+ "on res.idResult = ins.codResultado "
+		    		+ "inner join tiporeclamo tr "
+		    		+ "on tr.idTipoReclamo = re.idtiporeclamo "
+		    		+ "inner join callesrosario "
+		    		+ "on callesrosario.idcallesRosario = re.codCalle "
+		    		+ "order by re.idReclamo desc");
+		    
+		} catch (SQLException e)
+		{
+			System.out.println("Fallo el select");
+		}
+		
+		try {
+			while(rs.next())
+			{
+				Inspeccion inspec = new Inspeccion();
+				inspec = this.mapearConReclamo(rs);
+				ins.add(inspec);
+			}
+		
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		
+		try 
+			{
+			con.close();
+			}
+		catch(SQLException e) {
+			System.out.println("Conexion no cerrada");
+		}
+		return ins;
+	}
+	
+	public Inspeccion mapearConReclamo (ResultSet rs) throws SQLException
+	{
+		Inspeccion in = new Inspeccion();
+		Reclamo re = new Reclamo();
+		re.setIdReclamo(rs.getInt(1));
+		in.setCalle(rs.getString(2));
+		re.setAltura(rs.getInt(3));
+		in.setFechaInspeccion(rs.getDate(4));
+		in.setEstado(rs.getString(5));
+		Resultado r = new Resultado();
+		r.setDescResultado(rs.getString(6));
+		in.setResultado(r);
+		TipoReclamo tr = new TipoReclamo();
+		tr.setDescTipoReclamo(rs.getString(7));
+		re.setNomTitular(rs.getString(8));
+		re.setTipoReclamo(tr);
+		in.setReclamo(re);
+		return in;
+	}
+
 //	public void actualizar(Inspeccion in) throws Exception
 //	{
 //		Connection con = Conexion.obtenerConexion("medidores");
