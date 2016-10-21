@@ -1,0 +1,29 @@
+ALTER TABLE `medidores`.`callesrosario` 
+
+ADD COLUMN `idcalle` INT(7) NOT NULL AUTO_INCREMENT AFTER `callesRosariocol`,
+
+DROP PRIMARY KEY,
+
+ADD PRIMARY KEY (`idcalle`);
+
+ALTER TABLE `medidores`.`reclamos` 
+
+ADD COLUMN `id_calle` INT(7) NULL AFTER `idEstado`;
+
+
+update reclamos 
+set reclamos.id_calle = (
+	
+	select idcalle 
+    
+	from callesrosario 
+    
+	where callesrosario.idcallesRosario = reclamos.codCalle);
+
+/* me olvide de copiar, pero borrar columna de idcallesrosario*/
+
+ALTER TABLE `medidores`.`reclamos` 
+DROP COLUMN `codCalle`,
+CHANGE COLUMN `id_calle` `id_calle` INT(7) NULL DEFAULT NULL AFTER `nomTitular`;
+
+

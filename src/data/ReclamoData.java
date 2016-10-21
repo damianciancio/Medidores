@@ -20,7 +20,7 @@ public class ReclamoData
 			Connection con = Conexion.obtenerConexion();
 			PreparedStatement cmd = null;
 			String stringInsert = "insert into reclamos "+
-		    "(nomTitular, codCalle, altura, piso, depto, "+
+		    "(nomTitular, id_calle, altura, piso, depto, "+
 		    "letraDir, bis, idtiporeclamo, fechaingreso, idestado) values "+
 		    "( ?,?,?,?,?,?,?,?,?,?)";
 		    
@@ -28,7 +28,7 @@ public class ReclamoData
 			
 			cmd = con.prepareStatement(stringInsert);
 		    cmd.setString(1, rec.getNomTitular());
-		    cmd.setString(2, rec.getCalle().getIdCalle());
+		    cmd.setInt(2, rec.getCalle().getIdCalle());
 		    cmd.setInt(3, rec.getAltura());
 		    if(rec.getPiso() == null)
 		    {
@@ -121,12 +121,12 @@ public class ReclamoData
 	
 		    cmd = con.createStatement();
 	
-		    rs = cmd.executeQuery("SELECT idReclamo, nomTitular, codCalle, altura, "+
+		    rs = cmd.executeQuery("SELECT idReclamo, nomTitular, id_calle, altura, "+
 		    		"piso, depto, letraDir, bis, reclamos.idtiporeclamo, fechaIngreso, "+
 		    		"idEstado, callesRosariocol, desctiporeclamo,  ifnull(resultados.descResult, \"Pendiente de inspeccion\") resultado "+
 		    		"FROM reclamos "+ 
 		    		"inner join callesrosario "+
-		    		"on codCalle = idcallesrosario "+ 
+		    		"on id_calle = idcalle "+ 
 		    		"left join tiporeclamo "+
 		    		"on reclamos.idtiporeclamo = tiporeclamo.idtiporeclamo "+
 		    		"left join inspecciones "+
@@ -174,7 +174,7 @@ public class ReclamoData
 				tr.setIdTipoReclamo(rs.getInt(9));
 				tr.setDescTipoReclamo(rs.getString(13));
 				Calle ca = new Calle();
-				ca.setIdCalle(rs.getString(3));
+				ca.setIdCalle(rs.getInt(3));
 				ca.setNomCalle(rs.getString(12));
 				rec.setIdReclamo(rs.getInt(1));
 				rec.setNomTitular(rs.getString(2));
@@ -203,13 +203,13 @@ public class ReclamoData
 		
 		try
 		{
-			String stringInsert = "update reclamos set nomTitular = ? , codCalle = ? , "+
+			String stringInsert = "update reclamos set nomTitular = ? , id_calle = ? , "+
 		    "altura = ? , piso = ?, depto = ? , letraDir = ? , bis = ?, idtiporeclamo = ?, "
 		    + "fechaIngreso = ?, idEstado = ? "
 		    + "where idReclamo = ?";
 			cmd = con.prepareStatement(stringInsert);
 		    cmd.setString(1, rec.getNomTitular());
-		    cmd.setString(2, rec.getCalle().getIdCalle());
+		    cmd.setInt(2, rec.getCalle().getIdCalle());
 		    cmd.setInt(3, rec.getAltura());
 		    if(rec.getPiso() == null)
 		    {

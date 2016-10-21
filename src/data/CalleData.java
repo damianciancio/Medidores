@@ -24,7 +24,7 @@ public class CalleData {
 	
 		    cmd = con.createStatement();
 	
-		    rs = cmd.executeQuery("SELECT * FROM callesrosario order by callesrosario.callesrosariocol asc");
+		    rs = cmd.executeQuery("SELECT * FROM callesrosario order by callesrosario.idcalle asc");
 		    while(rs.next())
 			{
 				calles.add(this.mapear(rs));
@@ -51,7 +51,7 @@ public class CalleData {
 	}
 	
 	
-	public ArrayList<Calle> buscarCoincidencias(String nCalle) throws Exception
+	public ArrayList<Calle> buscarCoincidencias(String descCalle) throws Exception
 	{
 	
 		Connection con = Conexion.obtenerConexion();
@@ -65,11 +65,11 @@ public class CalleData {
 		    cmd = con.createStatement();
 	
 		    rs = cmd.executeQuery("select * from callesrosario "
-		    +"where callesrosario.callesRosariocol like '%"+nCalle+"%';");
+		    +"where callesrosario.callesRosariocol like '%"+descCalle+"%';");
 		    while(rs.next())
 			{
 				Calle ca = new Calle();
-				ca.setIdCalle(rs.getString(1));
+				ca.setIdCalle(rs.getInt(1));
 				ca.setNomCalle(rs.getString(2));
 				calles.add(mapear(rs, ca));
 			}
@@ -102,7 +102,7 @@ public class CalleData {
 		try {
 			if(rs.next()){
 				ca = new Calle();
-				ca.setIdCalle(rs.getString(1));
+				ca.setIdCalle(rs.getInt(1));
 				ca.setNomCalle(rs.getString(2));
 			}
 		} catch (SQLException e) {
@@ -118,7 +118,7 @@ public class CalleData {
 		try {
 			if(rs.next()){
 				ca = new Calle();
-				ca.setIdCalle(rs.getString(1));
+				ca.setIdCalle(rs.getInt(1));
 				ca.setNomCalle(rs.getString(2));
 			}
 		} catch (SQLException e) {
@@ -139,9 +139,9 @@ public class CalleData {
 		try {
 	
 		    cmd = con.createStatement();
-		    rs = cmd.executeQuery("select idcallesRosario, callesRosariocol "+
+		    rs = cmd.executeQuery("select idcalle, callesRosariocol "+
 		    						"from callesrosario "+
-		    						"where callesrosario.idcallesRosario =" + ca.getIdCalle());
+		    						"where callesrosario.idcalle =" + ca.getIdCalle());
 		    find = this.mapear(rs, find);
 		    
 		} catch (SQLException e)
@@ -175,7 +175,8 @@ public class CalleData {
 		try
 		{
 			cmd = con.createStatement();
-			cmd.executeQuery("update callesRosario (callesrosariocol)values (" + ca.getNomCalle()+")");
+			cmd.executeQuery("update callesRosario (callesrosariocol)values (" + ca.getNomCalle()+")"
+					+ " where callesrosario.idcalle = " + ca.getIdCalle());
 			
 		}
 		catch (Exception e)
@@ -197,7 +198,7 @@ public class CalleData {
 			
 			cmd = con.createStatement();
 			cmd.executeQuery("delete from callesrosario "+
-								"where idcallesrosario = " + ca.getIdCalle() );		
+								"where idcalle = " + ca.getIdCalle() );		
 		}
 		catch(Exception e)
 		{

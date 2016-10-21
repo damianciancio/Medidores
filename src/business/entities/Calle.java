@@ -1,13 +1,13 @@
 package business.entities;
 
 public class Calle extends Entidad {
-	private String idCalle;
+	private int idCalle;
 	private String nomCalle;
 	
-	public String getIdCalle() {
+	public int getIdCalle() {
 		return idCalle;
 	}
-	public void setIdCalle(String idCalle) {
+	public void setIdCalle(int idCalle) {
 		this.idCalle = idCalle;
 	}
 	public String getNomCalle() {
